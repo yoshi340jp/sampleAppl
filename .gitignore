@@ -3,3 +3,8 @@
 # Elastic Beanstalk CLI Files
 .elasticbeanstalk/*
 /node_modules/
+/.externalToolBuilders/
+/.settings/
+.jshintrc
+.sublime-project
+.tern-project
