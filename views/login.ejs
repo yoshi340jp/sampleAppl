@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+  <!-- aws sdk //-->
+  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.3.8.min.js"></script>
+  <!-- aws cognito sdk (public beta!!) //-->
+  <script src="<%= static_path + "/js/jsbn.js" %>"></script>
+  <script src="<%= static_path + "/js/jsbn2.js" %>"></script>
+  <script src="<%= static_path + "/js/sjcl.js" %>"></script>
+  <script src="<%= static_path + "/js/aws-cognito-sdk.min.js" %>"></script>
+  <script src="<%= static_path + "/js/amazon-cognito-identity.min.js" %>"></script>
+  <script src="<%= static_path + "/jquery/jquery-1.11.3.min.js" %>"></script>
+  <script src="<%= static_path + "/bootstrap/js/bootstrap.min.js" %>"></script>
+
+    <title>Login</title>
+  </head>
+
+  <body>
+
+    <form action="/auth/cognito" method="post">
+      <div>
+          <label>ユーザーID：</label>
+          <input type="text" id="name" name="name"/>
+      </div>
+      <div>
+          <label>パスワード：</label>
+          <input type="password" id="password" name="password"/>
+      </div>
+      <div>
+          <input type="submit" id="login" value="ログイン"/>
+      </div>
+  </form>    
+  <script>
+    <!--
+//      AWS.config.region = 'us-west-2'; // Region
+//      AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+//          IdentityPoolId: 'us-west-2:c30d1845-1ced-4937-8aa7-6b791e461c32'
+//      });
+      // Initialize the Amazon Cognito credentials provider
+//      AWSCognito.config.region = 'us-west-2'; // Region
+//      AWSCognito.config.credentials = new AWS.CognitoIdentityCredentials({
+//          IdentityPoolId: 'us-west-2:c30d1845-1ced-4937-8aa7-6b791e461c32'
+//      });
+      var data = { UserPoolId: 'us-west-2_GnuWf0Dnq',
+                    ClientId: '5q40303u3543cs3nkeip39u5i1'
+      };
+      var userPool;
+      var cognitoUser;
+    //-->
+    </script>
+    <script>
+    <!--
+    $("#login").click(function(event){ 
+      event.preventDefault();
+      var authenticationData = {
+          Username : $('#name').val(),
+          Password : $('#password').val()
+      };
+
+//      var authenticationDetails = new AWSCognito.CognitoIdentityServiceProvider.AuthenticationDetails(authenticationData);
+      var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+//      userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(data);
+      userPool = new AmazonCognitoIdentity.CognitoUserPool(data);
+      var userData = {
+          Username : $('#name').val(),
+          Pool : userPool
+        };
+      cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+///        cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
+      cognitoUser.authenticateUser(authenticationDetails, {
+          onSuccess: function (authresult) {
+              //console.log('access token + ' + authresult.getIdToken().getJwtToken());
+              var accessToken = authresult.getAccessToken().getJwtToken();
+
+              alert("access token:" + accessToken);
+              var url = "/mypage";
+  
+              $('form').fadeOut(700, function(){
+                  $(location).attr("href", url);
+              });
+              $('.wrapper').addClass('form-success'); 
+              
+          },
+          onFailure: function(err) {
+              alert(err.message);
+          },
+          newPasswordRequired: function(userAttributes, requiredAttributes) {
+            // User was signed up by an admin and must provide new 
+            // password and required attributes, if any, to complete 
+            // authentication.
+
+            // userAttributes: object, which is the user's current profile. It will list all attributes that are associated with the user. 
+            // Required attributes according to schema, which don’t have any values yet, will have blank values.
+            // requiredAttributes: list of attributes that must be set by the user along with new password to complete the sign-in.
+
+            
+            // Get these details and call 
+            // newPassword: password that user has given
+            // attributesData: object with key as attribute name and value that the user has given.
+            alert("new password required");
+            cognitoUser.completeNewPasswordChallenge(newPassword, attributesData, this)
+        } 
+      });
+    });
+    //-->
+    </script>
+      
+  </body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+    <title>GEEKLAB Joetsu</title>
+  <!-- aws sdk //-->
+  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.3.8.min.js"></script>
+  <!-- aws cognito sdk (public beta!!) //-->
+  <script src="<%= static_path + "/js/jsbn.js" %>"></script>
+  <script src="<%= static_path + "/js/jsbn2.js" %>"></script>
+  <script src="<%= static_path + "/js/sjcl.js" %>"></script>
+  <script src="<%= static_path + "/js/aws-cognito-sdk.min.js" %>"></script>
+  <script src="<%= static_path + "/js/amazon-cognito-identity.min.js" %>"></script>
+  <script src="<%= static_path + "/jquery/jquery-1.11.3.min.js" %>"></script>
+  <!-- jquery //-->
+  <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+  <!-- bootstrap3 //-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+</head>
+
+<body>
+<div class="container">
+<form class="form-signin">
+  <h2 class="form-signin-heading">サインアップ</h2>
+  <div id="message" class="alert" style="display:none;"></div>
+  <label for="inputUsername" class="sr-only">ユーザー名</label>
+  <input type="text" id="inputUsername" class="form-control" placeholder="User name" required autofocus></input>
+  <label for="inputPassword" class="sr-only">パスワード</label>
+  <input type="password" id="inputPassword" class="form-control" placeholder="Password" required></input>
+  <label for="inputEmail" class="sr-only">メールアドレス</label>
+  <input type="text" id="inputEmail" class="form-control" placeholder="E-mail Address" required></input>
+  <br/>
+  <input type="button" class="btn btn-lg btn-primary btn-bloc" id="user_add_btn" value="ユーザーを作成する"></input>
+</form>
+</div>
+<script>
+<!--
+  AWS.config.region = 'us-west-2'; // Region
+  AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+      IdentityPoolId: 'us-west-2:c30d1845-1ced-4937-8aa7-6b791e461c32'
+  });
+  // Initialize the Amazon Cognito credentials provider
+  AWSCognito.config.region = 'us-west-2'; // Region
+  AWSCognito.config.credentials = new AWS.CognitoIdentityCredentials({
+      IdentityPoolId: 'us-west-2:c30d1845-1ced-4937-8aa7-6b791e461c32'
+  });
+  var data = { UserPoolId: 'us-west-2_GnuWf0Dnq',
+                ClientId: '3crese69u60in60pqurnpded32'
+  };
+  var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(data);
+  var attributeList = [];
+  var cognitoUser;
+//-->
+</script>
+<script>
+<!--
+$('#user_add_btn').click(function() {
+  username = $("#inputUsername").val();
+  password = $("#inputPassword").val();
+  email = $("#inputEmail").val();
+  if(!username || !password || !email) { return false; }
+  var dataEmail = {
+    Name : 'email',
+    Value : email
+  };
+
+  attributeList.push(dataEmail);
+
+  userPool.signUp(username, password, attributeList, null, function(err, result){
+      if (err) {
+          console.log(err);
+          message_text = err;
+          message_class = "alert-danger";
+      } else {
+          cognitoUser = result.user;
+          console.log('user name is ' + cognitoUser.getUsername());
+          message_text = cognitoUser.getUsername() + "が作成されました";
+          message_class = "alert-success";
+      }    
+      $("#message").text(message_text);
+      $("#message").addClass(message_class);
+      $('#message').show();
+      setTimeout(function() {
+        $('#message').fadeOut();
+        $("#message").removeClass(message_class);
+      }, 5000);
+  });
+});
+//-->
+</script>
+</body>
+</html>

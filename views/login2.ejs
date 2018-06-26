@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Login</title>
+  </head>
+
+  <body>
+
+    <form action="/auth/cognito" method="post">
+      <div>
+          <label>ユーザーID：</label>
+          <input type="text" id="username" name="username"/>
+      </div>
+      <div>
+          <label>パスワード：</label>
+          <input type="password" id="password" name="password"/>
+      </div>
+      <div>
+          <input type="submit" id="login" value="ログイン"/>
+      </div>
+  </form>    
+  </body>
+</html>

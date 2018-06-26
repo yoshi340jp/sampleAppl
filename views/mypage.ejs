@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+    <title>mypage</title>
+ 
+    <!-- aws sdk //-->
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.3.8.min.js"></script>
+    <!-- aws cognito sdk (public beta!!) //-->
+    <script src="<%= static_path + "/js/jsbn.js" %>"></script>
+    <script src="<%= static_path + "/js/jsbn2.js" %>"></script>
+    <script src="<%= static_path + "/js/sjcl.js" %>"></script>
+    <script src="<%= static_path + "/js/aws-cognito-sdk.min.js" %>"></script>
+    <script src="<%= static_path + "/js/amazon-cognito-identity.min.js" %>"></script>
+    <script src="<%= static_path + "/jquery/jquery-1.11.3.min.js" %>"></script>
+    <script src="<%= static_path + "/bootstrap/js/bootstrap.min.js" %>"></script>
+
+    <!-- Bootstrap core CSS -->
+    <link href="<%= static_path + "/bootstrap/css/theme/" + theme + "/bootstrap.css" %>" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="<%= static_path + "/bootstrap/css/jumbotron-narrow.css" %>" rel="stylesheet">
+
+  </head>
+  <body>
+     <div>
+     <h1>mypage</h1>
+        <div id="username">Username: XXXXX</div>
+        <div id="email">EMail: XXXXX</div>
+ 
+    </div>
+ 
+<script>
+    <!--
+      var data = { UserPoolId: 'us-west-2_GnuWf0Dnq',
+                    ClientId: '5q40303u3543cs3nkeip39u5i1'
+      };
+      var userPool = new AmazonCognitoIdentity.CognitoUserPool(data);
+      var cognitoUser = userPool.getCurrentUser();
+      if (cognitoUser != null) {
+        cognitoUser.getSession(function(err, sessresult) {
+            if (sessresult) {
+              alert("username = " + cognitoUser.username);
+              $("#username").html("Username: " + cognitoUser.username);
+
+              cognitoUser.getUserAttributes(function(err, attrresult) {
+                    if (err) {
+                        alert(err);
+                        return;
+                    }
+    
+                    for (i = 0; i < attrresult.length; i++) {
+                        if (attrresult[i].getName()=="email"){
+                          alert("email = " + attrresult[i].getValue());
+                          $("#email").html("EMail: " + attrresult[i].getValue());
+                        }
+                    }
+    
+                });
+            } else {
+              var url = "/login";
+              $(location).attr("href", url);
+            }
+        });
+    } else {
+      var url = "/login";
+      $(location).attr("href", url);
+    }     
+    //-->
+  </script>
+  </body>
+</html>
