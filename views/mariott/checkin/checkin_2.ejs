@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Check-in</title>
+    
+    <!-- Bootstrap core CSS -->
+    <link href="<%= static_path + "/bootstrap/css/theme/" + theme + "/bootstrap.css" %>" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="<%= static_path + "/bootstrap/css/jumbotron-narrow.css" %>" rel="stylesheet">
+
+	<!-- JQuery.js -->
+    <script src="<%= static_path + "/jquery/jquery-1.11.3.min.js" %>"></script>
+
+  </head>
+
+  <body>
+  	<div>
+          <label><%= __('checkin2.header') %></label>
+  	</div>
+    <form action="" method="post">
+      <div>
+          <label><%= __('checkin2.age') %></label>
+          <input type="text" id="age" name="age"/>
+      </div>
+      <div>
+        <label><%= __('checkin2.country') %></label>
+		<select name="country" id="country">
+			<% for (var i in countryList) { %>		
+				<option value="<%- countryList[i].SHORTNAME %>"><%- countryList[i].ENNAME %></option>
+			<% } %>
+		</select>
+      </div>
+      <div>
+      	<label><%= __('checkin2.language') %></label>
+		<select name="language" id="language">
+			<option value="jp">日本語</option>
+			<option value="en">English</option>
+			<option value="cn">Chinese</option>
+		</select>
+        <input type="button" id="langchange" value="change"/>
+      </div>
+      <div>
+          <input type="button" id="next" value="<%= __('checkin2.proceed') %>"/>
+      </div>
+  </form>    
+
+  <script>
+    <!--
+    $("#langchange").click(function(event){
+		$('form').attr('action', '<%= '/' + hotel_id + "/langchange/" %>');
+		$('form').submit();
+    });    
+    $("#next").click(function(event){
+		$('form').attr('action', '<%= '/' + hotel_id + "/checkin/checkin3/" %>');
+		$('form').submit();
+    });    
+    //-->
+	</script>
+  </body>
+</html>

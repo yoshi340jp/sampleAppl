@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+    <title>menu</title>
+ 
+    <!-- Bootstrap core CSS -->
+    <link href="<%= static_path + "/bootstrap/css/theme/" + theme + "/bootstrap.css" %>" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="<%= static_path + "/bootstrap/css/jumbotron-narrow.css" %>" rel="stylesheet">
+
+	<!-- JQuery.js -->
+    <script src="<%= static_path + "/jquery/jquery-1.11.3.min.js" %>"></script>
+  </head>
+  
+  <body>
+     <div>
+     <h1>menu</h1>
+	    <form action="" method="post">
+	      <div>
+	          <input type="button" id="checkin" value="Check-in"/>
+	      </div>
+	      <div>
+	          <input type="button" id="lookup" value="Guest Look-up"/>
+	      </div>
+	      <div>
+	          <input type="button" id="checkout" value="Check-out"/>
+	      </div>
+    </div>
+    <script>
+    <!--
+    $("#checkin").click(function(event){
+		$('form').attr('action', '<%= "/" + hotel_id + "/checkin/checkin1" %>');
+		$('form').submit();
+    });
+    
+    $("#lookup").click(function(event){
+		$('form').attr('action', '<%= "/" +  hotel_id + "/lookup/" %>');
+		$('form').submit();
+    });
+
+    $("#checkout").click(function(event){
+		$('form').attr('action', '<%=  "/" + hotel_id + "/checkout/" %>');
+		$('form').submit();
+    });    
+    //-->
+	</script>
+  </body>
+</html>

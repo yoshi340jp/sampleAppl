@@ -14,5 +14,5 @@ module.exports = function(){
   });
 
   // 利用するstrategyを設定
-  passport.use(require('./passport/cognito'));
+  passport.use(require('./cognito'));
 };

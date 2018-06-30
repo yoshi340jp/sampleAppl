@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Check-in</title>
+    
+    <!-- Bootstrap core CSS -->
+    <link href="<%= static_path + "/bootstrap/css/theme/" + theme + "/bootstrap.css" %>" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="<%= static_path + "/bootstrap/css/jumbotron-narrow.css" %>" rel="stylesheet">
+
+	<!-- JQuery.js -->
+    <script src="<%= static_path + "/jquery/jquery-1.11.3.min.js" %>"></script>
+
+  </head>
+
+  <body>
+  	<div>
+  		<%= __('checkin3.header') %>
+  	</div>
+    <form action="" method="post">
+      <div>
+		<% for (var i in behaviorList) { %>		
+			<div>
+				<input type="checkbox" name="behavior" value="<%- behaviorList[i].KEY %>" />
+				<label>
+					<%- behaviorList[i].BEHAVIOR_VAL %>
+				</label>
+			</div>
+		<% } %>	
+      </div>
+      <div>
+          <input type="button" id="next" value="<%= __('checkin3.proceed') %>"/>
+      </div>
+  </form>    
+
+  <script>
+    <!--
+    $("#next").click(function(event){
+		$('form').attr('action', '<%= '/' + hotel_id + "/checkin/checkin4/" %>');
+		$('form').submit();
+    });    
+    //-->
+	</script>
+  </body>
+</html>

@@ -1,17 +1,7 @@
+'use strict';
+
 // Include the cluster module
 var cluster = require('cluster');
-
-// 認可処理。指定されたロールを持っているかどうか判定します。
-var authorize = function () {
-    return function (req, res, next) {
-        if (req.user !== null) {
-            console.log("userNAME:" + req.user.username);
-            return next();
-        }
-        console.log("userNG2:" + req.user);
-        res.redirect("/login");
-    };
-};
 
 // Code to run if we're in the master process
 if (cluster.isMaster) {
@@ -38,140 +28,87 @@ if (cluster.isMaster) {
     var AWS = require('aws-sdk');
     var express = require('express');
     var session = require('express-session');
+    var flash = require('express-flash');
     var bodyParser = require('body-parser');
     var passport = require('passport');
-
-    AWS.config.region = process.env.REGION;
-
-    var sns = new AWS.SNS();
-    var ddb = new AWS.DynamoDB();
-
-    var ddbTable =  process.env.STARTUP_SIGNUP_TABLE;
-    var snsTopic =  process.env.NEW_SIGNUP_TOPIC;
+    var i18n = require("i18n");
+    require('dotenv').config();
+    
     var app = express();
 
-    // passportモジュールをLoad
-    require('./config/passport')(app);
-
+    // templateエンジンの設定(ejs)
     app.set('view engine', 'ejs');
-    app.set('views', __dirname + '/views');
+    app.set('views', process.cwd() + '/views');
     app.use(bodyParser.urlencoded({extended:false}));
     app.use(express.static('static'));
 
-    console.log("path:" + __dirname + "/views");
-
-    // session用のmiddlewaresを有効化
+    // passportモジュールをLoad（認証用）
+    require('./common/passport')(app);
     app.use(session({
         secret: 'secret secret',
         resave: false,
         saveUninitialized: false
     }));
+    app.use(flash());
     app.use(passport.initialize());
     app.use(passport.session());
 
-    var router = require('./routes/v1/');
-    app.use('/api/v1/', router);
-    
-    app.post('/auth/cognito',
+    //認証用モジュールのロード
+	var auth = require(process.cwd() + '/common/auth');
+
+    // i18nの利用設定（Multi Language対応）
+    i18n.configure({
+      // 利用するlocalesを設定。これが辞書ファイルとひも付きます
+      locales: ['ja', 'en'],
+      defaultLocale: 'ja',
+      // 辞書ファイルのありかを指定
+      directory: __dirname + "/locales",
+      // オブジェクトを利用したい場合はtrue
+      objectNotation: true
+    });
+    app.use(i18n.init);
+
+    // 言語切り替え用
+    app.use(function (req, res, next) {
+      if (req.session.locale) {
+        i18n.setLocale(req, req.session.locale);
+        console.log("session" + req.session.locale);
+      }
+      next();
+    });
+
+    // routingの設定
+    var router_root = require('./routes/');
+    var router_checkin = require('./routes/checkin/');    
+    var router_api = require('./routes/v1/');
+
+    app.use('/:hotelId/', router_root);
+    app.use('/:hotelId/checkin/', router_checkin);
+    app.use('/api/:hotelId/', router_api);
+
+    //認証用Request処理
+    app.post('/:hotelId/loginauth',function(req, res, next) {
         passport.authenticate('cognito', {
-            successRedirect: '/mypage2',
-            failureRedirect: '/login2'
-    }));
-
-    app.get('/login', function(req, res){
-        res.render('login', {
-            static_path: '',
-            theme: process.env.THEME || 'flatly',
-            flask_debug: process.env.FLASK_DEBUG || 'false'
-        });
+            successRedirect: '/' + req.params.hotelId + '/menu',
+            failureRedirect: '/' + req.params.hotelId + '/login',
+            failureFlash: true
+        })(req, res, next);
     });
 
-    app.get('/login2', function(req, res){
-        res.render('login2', {
-            static_path: '',
-            theme: process.env.THEME || 'flatly',
-            flask_debug: process.env.FLASK_DEBUG || 'false'
-        });
+    //言語変更用
+    app.post('/:hotelId/langchange', auth.authorize(), function(req, res, next){
+    	console.log("Language change");
+    	req.session.locale = req.body.language;
+        console.log(req.body.language);
+        res.redirect('back');
     });
-
-    app.get('/mypage', authorize(), function(req, res){
-        res.render('mypage', {
-            static_path: '',
-            theme: process.env.THEME || 'flatly',
-            flask_debug: process.env.FLASK_DEBUG || 'false'
-        });
-    });
-
-    app.get('/mypage2', authorize(), function(req, res){
-        res.render('mypage2', {
-            static_path: '',
-            theme: process.env.THEME || 'flatly',
-            flask_debug: process.env.FLASK_DEBUG || 'false'
-        });
-    });
-
-    app.get('/signup2', function(req, res){
+    
+    //Dummy
+    app.get('/aa/signup2', function(req, res){
         res.render('signup2', {
             static_path: '',
             theme: process.env.THEME || 'flatly',
             flask_debug: process.env.FLASK_DEBUG || 'false'
-        });
-    });
-
-    app.get('/', function(req, res) {
-        res.render('index', {
-            static_path: '',
-            theme: process.env.THEME || 'flatly',
-            flask_debug: process.env.FLASK_DEBUG || 'false'
-        });
-    });
-
-    app.get('/login/index', function(req, res) {
-        res.render('index', {
-            static_path: '',
-            theme: process.env.THEME || 'flatly',
-            flask_debug: process.env.FLASK_DEBUG || 'false'
-        });
-    });
-
-    app.post('/signup', function(req, res) {
-        var item = {
-            'userId': {'S': req.body.email},
-            'name': {'S': req.body.name},
-            'preview': {'S': req.body.previewAccess},
-            'theme': {'S': req.body.theme}
-        };
-
-        ddb.putItem({
-            'TableName': ddbTable,
-            'Item': item,
-            'Expected': { email: { Exists: false } }        
-        }, function(err, data) {
-            if (err) {
-                var returnStatus = 500;
-
-                if (err.code === 'ConditionalCheckFailedException') {
-                    returnStatus = 409;
-                }
-
-                res.status(returnStatus).end();
-                console.log('DDB Error: ' + err);
-            } else {
-                sns.publish({
-                    'Message': 'Name: ' + req.body.name + "\r\nEmail: " + req.body.email 
-                                        + "\r\nPreviewAccess: " + req.body.previewAccess 
-                                        + "\r\nTheme: " + req.body.theme,
-                    'Subject': 'New user sign up!!!',
-                    'TopicArn': snsTopic
-                }, function(err, data) {
-                    if (err) {
-                        res.status(500).end();
-                        console.log('SNS Error: ' + err);
-                    } else {
-                        res.status(201).end();
-                    }
-                });            
-            }
         });
     });
 

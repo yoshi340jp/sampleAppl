@@ -1,0 +1,18 @@
+{
+	"checkin2": {
+		"header":"Welcome! To improve our service, please enter your information",
+		"age": "Age",
+		"country": "Original country",
+		"language": "Language",
+		"proceed": "Proceed",
+		"header": "checkin2.header"
+	},
+	"checkin3": {
+		"header":"We want to make sure sure you experience true Omotenash. Please select the top 3 things you would like",
+		"proceed": "Proceed"
+	},
+	"checkin4":{
+		"header":"Thank you! At the end of your stay, please let us know how we do!",
+		"reset":"Reset"
+	}
+}

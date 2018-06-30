@@ -7,11 +7,19 @@
     <meta name="author" content="">
 
     <title>Login</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="<%= static_path + "/bootstrap/css/theme/" + theme + "/bootstrap.css" %>" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="<%= static_path + "/bootstrap/css/jumbotron-narrow.css" %>" rel="stylesheet">
   </head>
 
   <body>
-
-    <form action="/auth/cognito" method="post">
+	<div>
+		<lable><%= error_msg %></label>
+	</div>
+    <form action="<%= '/' + hotel_id + '/loginauth'%>" method="post">
       <div>
           <label>ユーザーID：</label>
           <input type="text" id="username" name="username"/>
@@ -23,6 +31,6 @@
       <div>
           <input type="submit" id="login" value="ログイン"/>
       </div>
-  </form>    
+  </form>
   </body>
 </html>
