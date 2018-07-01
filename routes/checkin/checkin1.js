@@ -8,6 +8,8 @@ function execute(req, res) {
         theme: process.env.THEME || 'flatly',
         flask_debug: process.env.FLASK_DEBUG || 'false',
         hotel_id: req.params.hotelId,
+        roomNo: req.session.indivisual.roomNo,
+        gender: req.session.indivisual.gender,
         error_msg: req.flash('error')
     });
 }

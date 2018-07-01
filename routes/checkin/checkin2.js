@@ -55,6 +55,9 @@ function execute(req, res, insertFlag) {
 		        flask_debug: process.env.FLASK_DEBUG || 'false',
 		        hotel_id: req.params.hotelId,
 		        countryList: JSON.parse(results[0]),
+		        age: req.session.indivisual.age,
+		        country: req.session.indivisual.country,
+		        language: req.session.indivisual.language,
 		        error_msg: req.flash('error')
 		    });
     	}
@@ -74,9 +77,8 @@ router.post('/checkin2', auth.authorize(), function(req,res){
 	}
 	
 	if(req.body.roomNo) {
-		if(!isNaN(req.body.roomNo)){
-			req.session.indivisual.roomNo= req.body.roomNo;		  
-		}else{
+		req.session.indivisual.roomNo = req.body.roomNo;		  
+		if(isNaN(req.body.roomNo)){
 			req.flash('error','ルームNoは数字で入力してください。¥n');
 			errflag = true;		  
 		}

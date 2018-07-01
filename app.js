@@ -103,6 +103,9 @@ if (cluster.isMaster) {
     app.post('/:hotelId/langchange', auth.authorize(), function(req, res, next){
     	console.log("Language change");
     	req.session.locale = req.body.language;
+    	req.session.indivisual.age = req.body.age;		  
+    	req.session.indivisual.country = req.body.country;		  
+    	req.session.indivisual.language = req.body.language; 
         console.log(req.body.language);
         res.redirect('back');
     });

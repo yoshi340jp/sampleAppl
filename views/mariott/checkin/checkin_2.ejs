@@ -30,22 +30,22 @@
     <form action="" method="post">
       <div>
           <label><%= __('checkin2.age') %></label>
-          <input type="text" id="age" name="age"/>
+          <input type="text" id="age" name="age" value="<%= age %>"/>
       </div>
       <div>
         <label><%= __('checkin2.country') %></label>
 		<select name="country" id="country">
 			<% for (var i in countryList) { %>		
-				<option value="<%- countryList[i].SHORTNAME %>"><%- countryList[i].ENNAME %></option>
+				<option value="<%- countryList[i].SHORTNAME %>"<% if(country == countryList[i].SHORTNAME){ %> selected <% } %>><%- countryList[i].ENNAME %></option>
 			<% } %>
 		</select>
       </div>
       <div>
       	<label><%= __('checkin2.language') %></label>
 		<select name="language" id="language">
-			<option value="jp">日本語</option>
-			<option value="en">English</option>
-			<option value="cn">Chinese</option>
+			<option value="ja" <% if(language == 'ja'){ %> selected <% } %>>日本語</option>
+			<option value="en" <% if(language == 'en'){ %> selected <% } %>>English</option>
+			<option value="cn" <% if(language == 'cn'){ %> selected <% } %>>Chinese</option>
 		</select>
         <input type="button" id="langchange" value="change"/>
       </div>

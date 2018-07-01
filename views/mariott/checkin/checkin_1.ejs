@@ -23,12 +23,12 @@
     <form action="<%= '/' + hotel_id + '/checkin/checkin2' %>" method="post">
       <div>
           <label>Gender</label>
-          <input type="radio" id="gender" name="gender" value="male"/>男
-          <input type="radio" id="gender" name="gender" value="femail"/>女          
+          <input type="radio" id="gender" name="gender" value="male" <%if (gender == 'male'){ %>checked="checked"<% } %> />男
+          <input type="radio" id="gender" name="gender" value="femail" <%if (gender == 'femail'){ %>checked="checked"<% } %>/>女          
       </div>
       <div>
           <label>Room Number</label>
-          <input type="text" id="roomNo" name="roomNo"/>
+          <input type="text" id="roomNo" name="roomNo" value="<%= roomNo %>"/>
       </div>
       <div>
           <input type="submit" id="next" value="Proceed"/>
