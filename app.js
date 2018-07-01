@@ -72,11 +72,16 @@ if (cluster.isMaster) {
 
     // 言語切り替え用
     app.use(function (req, res, next) {
-      if (req.session.locale) {
-        i18n.setLocale(req, req.session.locale);
-        console.log("session" + req.session.locale);
+      if (req.body.language) {
+        i18n.setLocale(req, req.body.language);
+        req.session.locale = req.body.language;
+        console.log("session" +  i18n.getLocale(req));
+      }else if(!req.session.locale){
+    	req.session.locale = i18n.getLocale(req);
+        console.log("session2" +  i18n.getLocale(req));
       }else{
-    	req.session.locale = i18n.getLocale();
+    	i18n.setLocale(req, req.session.locale);
+    	console.log("session3" +  i18n.getLocale(req));    	  
       }
       next();
     });
@@ -102,11 +107,12 @@ if (cluster.isMaster) {
     //言語変更用
     app.post('/:hotelId/langchange', auth.authorize(), function(req, res, next){
     	console.log("Language change");
-    	req.session.locale = req.body.language;
+        req.session.locale = req.body.language;
     	req.session.indivisual.age = req.body.age;		  
     	req.session.indivisual.country = req.body.country;		  
     	req.session.indivisual.language = req.body.language; 
         console.log(req.body.language);
+        console.log("session4" +  i18n.getLocale(req));
         res.redirect('back');
     });
     

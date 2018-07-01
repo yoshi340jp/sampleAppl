@@ -76,7 +76,8 @@ router.post('/checkin3', auth.authorize(), function(req,res){
 	
 	req.session.indivisual.country = req.body.country;		  
 	req.session.indivisual.language = req.body.language; 
-
+	req.session.locale = req.body.language;
+	
 	if(errflag){
 	  res.redirect('back');
 	}else{
