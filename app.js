@@ -75,6 +75,8 @@ if (cluster.isMaster) {
       if (req.session.locale) {
         i18n.setLocale(req, req.session.locale);
         console.log("session" + req.session.locale);
+      }else{
+    	req.session.locale = i18n.getLocale();
       }
       next();
     });
@@ -106,8 +108,8 @@ if (cluster.isMaster) {
     });
     
     //Dummy
-    app.get('/aa/signup2', function(req, res){
-        res.render('signup2', {
+    app.get('/option/signup', function(req, res){
+        res.render('signup', {
             static_path: '',
             theme: process.env.THEME || 'flatly',
             flask_debug: process.env.FLASK_DEBUG || 'false'

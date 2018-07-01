@@ -13,8 +13,9 @@ function execute(req, res,updateFlag) {
 
     async.parallel([
     	function(callback){
-    		var queryString = 'SELECT ID,BEHAVIOR_VAL FROM SPECIFIC_BEHABIOR ORDER BY RAND() LIMIT 3';
-	    	dba.selectLists(queryString, function(err,result){
+    		var queryString = 'SELECT ID,BEHAVIOR_VAL FROM SPECIFIC_BEHABIOR WHERE LANG = ? ORDER BY RAND()';
+    		var param = [String(req.session.locale).toUpperCase()];
+	    	dba.selectLists(queryString, param,function(err,result){
 	    		if(err){
 	    			console.log(err);
 	    			callback(err,null);
@@ -27,8 +28,8 @@ function execute(req, res,updateFlag) {
     	function(callback){
     		if(updateFlag){
 	    		console.log(req.session.indivisual);
-	    		var queryString = "UPDATE INDIVISUAL_INFO SET AGE = ?,COUNTRY=?, LANGUAGE=? WHERE SITE_CODE = ? AND CHECK_IN_DATE = ? AND ROOM_NUM=? AND INDIVISUAL_ID = ?"; 
-	    		var param = [req.session.indivisual.age,req.session.indivisual.country,req.session.indivisual.language,
+	    		var queryString = "UPDATE INDIVISUAL_INFO SET AGE = ?,COUNTRY=?, LANGUAGE=?, UPD_DATE = NOW(), UPD_USER = ? WHERE SITE_CODE = ? AND CHECK_IN_DATE = ? AND ROOM_NUM=? AND INDIVISUAL_ID = ?"; 
+	    		var param = [req.session.indivisual.age,req.session.indivisual.country,req.session.indivisual.language,req.session.indivisual.operator,
 	    			req.session.indivisual.siteCode,req.session.indivisual.checkinDate,req.session.indivisual.roomNo,req.session.indivisual.indivisualId,req.session.indivisual.gender];
 	    
 	    		dba.update(queryString, param, function(err,result){

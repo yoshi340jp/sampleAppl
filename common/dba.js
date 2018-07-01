@@ -28,9 +28,9 @@
 		console.log("Disconnect");
 	};
 	
-	exports.selectPK = function(queryString,callback){
+	exports.selectPK = function(queryString,param,callback){
 		console.log(queryString);
-		client.query(queryString, function(err, result) {
+		client.query(queryString, param,function(err, result) {
 			if(err) {
 				console.error('error running query', err);
 				callback(err,null);
@@ -40,8 +40,10 @@
 		});
 	};
 	
-	exports.selectLists = function(queryString,callback){
-		client.query(queryString, function(err, result) {
+	exports.selectLists = function(queryString,param,callback){
+		var sql = mysql.format(queryString, param);
+		console.log(sql);
+		client.query(queryString, param,function(err, result) {
 			if(err) {
 				callback(err,null);
 			}else{

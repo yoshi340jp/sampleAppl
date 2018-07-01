@@ -14,7 +14,7 @@ function execute(req, res, insertFlag) {
     async.parallel([
     	function(callback){
     		var queryString = 'SELECT SHORTNAME, ENNAME FROM COUNTRY';
-	    	dba.selectLists(queryString, function(err,result){
+	    	dba.selectLists(queryString, null,function(err,result){
 	    		if(err){
 	    			callback(err,null);
 	    		}else{
@@ -25,9 +25,9 @@ function execute(req, res, insertFlag) {
     	},
     	function(callback){
     		if(insertFlag){
-	    		var queryString = "INSERT INTO INDIVISUAL_INFO (SITE_CODE,CHECK_IN_DATE,ROOM_NUM,INDIVISUAL_ID,GENDER)VALUES(";
-	    		queryString +=	"?,?,?,?,?)";
-	    		var param = [req.session.indivisual.siteCode,req.session.indivisual.checkinDate ,req.session.indivisual.roomNo,req.session.indivisual.indivisualId,req.session.indivisual.gender];
+	    		var queryString = "INSERT INTO INDIVISUAL_INFO (SITE_CODE,CHECK_IN_DATE,ROOM_NUM,INDIVISUAL_ID,GENDER,CRE_DATE,CRE_USER)VALUES(";
+	    		queryString +=	"?,?,?,?,?,now(),?)";
+	    		var param = [req.session.indivisual.siteCode,req.session.indivisual.checkinDate ,req.session.indivisual.roomNo,req.session.indivisual.indivisualId,req.session.indivisual.gender,req.session.indivisual.operator];
 	    
 	    		dba.insert(queryString, param, function(err,result){
 	    			if(err){
