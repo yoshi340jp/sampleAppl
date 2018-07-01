@@ -39,7 +39,18 @@ function execute(req, res) {
 }
 
 //POST Request
-router.post('/checkin4', auth.authorize(), function(req,res){execute(req,res);});
+router.post('/checkin4', auth.authorize(), function(req,res){
+	console.log("checked" + req.body.behavior);
+	var arrayBehavior = [req.body.behavior];
+	if(arrayBehavior.length > 3){
+		
+	}else{
+		console.log("0" + arrayBehavior[0]);
+		console.log("1" + arrayBehavior[1]);
+		console.log("2" + arrayBehavior[2]);
+	}
+	execute(req,res);
+});
 
 //GET Request
 router.get('/checkin4', auth.authorize(), function(req,res){execute(req,res);});

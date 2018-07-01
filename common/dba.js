@@ -45,11 +45,47 @@
 			if(err) {
 				callback(err,null);
 			}else{
-	//			console.log(result);
 				callback(null,JSON.stringify(result));
-	//			this.returnResult = JSON.stringify(result);
-	//			console.log("ret2:"+ this.returnResult);
 			}
 		});
 	};
+	
+	exports.insert = function(queryString, param, callback){
+		var sql = mysql.format(queryString, param);
+		console.log(sql);
+		client.query(queryString, param, function(err, result){
+			if(err) {
+				console.log(err);
+				callback(err,null);
+			}else{
+				console.log(result);
+				callback(null,result.affectedRows);
+			}
+		});
+	};
+
+	exports.update = function(queryString, param,callback){
+		client.query(queryString, param, function(err, result){
+			if(err) {
+				console.log(err);
+				callback(err,null);
+			}else{
+				console.log('changed ' + result.changedRows + ' rows');
+				callback(null,result.changedRows);
+			}
+		});
+	};
+
+	exports.delete = function(queryString, param, callback){
+		client.query(queryString, param,function(err, result){
+			if(err) {
+				console.log(err);
+				callback(err,null);
+			}else{
+				console.log('deleted ' + result.affectedRows + ' rows');
+				callback(null,result.affectedRows);
+			}
+		});
+	};
+
 //module.exports = client;
