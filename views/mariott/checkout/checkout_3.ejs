@@ -6,28 +6,32 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Check in (Behavior Request)</title>
-    
+    <title>Check-out/After Stay (Behavior Feedback)</title>
+
     <!-- Bootstrap core CSS -->
     <link href="<%= static_path + "/bootstrap/css/theme/" + theme + "/bootstrap.css" %>" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="<%= static_path + "/bootstrap/css/jumbotron-narrow.css" %>" rel="stylesheet">
-
-	<!-- JQuery.js -->
-    <script src="<%= static_path + "/jquery/jquery-1.11.3.min.js" %>"></script>
-
   </head>
 
   <body>
+	<div>
+		<lable><%- error_msg %></label>
+	</div>
+
   	<div>
-  		<%- __('checkin4.header') %>
+  		<%- __('checkout3.header') %>
   	</div>
-    <form action="<%= '/' + hotel_id + '/menu' %>" method="post">
+
+    <form action="<%= '/' + hotel_id + '/checkout/checkout4' %>" method="post">
       <div>
-          <input type="submit" id="reset" value="<%= __('checkin4.reset') %>"/>
+          <label><%= __('checkout3.comment') %></label>
+          <input type="text" id="comment" name="comment" value="<%= comment %>"/>
+      </div>
+      <div>
+          <input type="submit" id="next" value="<%= __('checkout3.proceed') %>"/>
       </div>
   </form>    
-
   </body>
 </html>

@@ -30,7 +30,7 @@ function execute(req, res,updateFlag) {
 	    		console.log(req.session.indivisual);
 	    		var queryString = "UPDATE INDIVISUAL_INFO SET AGE = ?,COUNTRY=?, LANGUAGE=?, UPD_DATE = NOW(), UPD_USER = ? WHERE SITE_CODE = ? AND CHECK_IN_DATE = ? AND ROOM_NUM=? AND INDIVISUAL_ID = ?"; 
 	    		var param = [req.session.indivisual.age,req.session.indivisual.country,req.session.indivisual.language,req.session.indivisual.operator,
-	    			req.session.indivisual.siteCode,req.session.indivisual.checkinDate,req.session.indivisual.roomNo,req.session.indivisual.indivisualId,req.session.indivisual.gender];
+	    			req.session.indivisual.siteCode,req.session.indivisual.checkinDate,req.session.indivisual.roomNo,req.session.indivisual.indivisualId];
 	    
 	    		dba.update(queryString, param, function(err,result){
 	    			if(err){
@@ -46,15 +46,21 @@ function execute(req, res,updateFlag) {
     	}
 	],
 	function(err,results){
-    	console.log("render"+ results);
-		res.render(req.params.hotelId + '/checkin/checkin_3', {
-	        static_path: '',
-	        theme: process.env.THEME || 'flatly',
-	        flask_debug: process.env.FLASK_DEBUG || 'false',
-	        hotel_id: req.params.hotelId,
-	        behaviorList: JSON.parse(results[0]),
-	        error_msg: req.flash('error')
-	    });
+    	if(err){
+    		console.log(err);
+    		req.flash('error',err.sqlMessage);
+            res.redirect('back');
+    	}else{
+	    	console.log("render"+ results);
+			res.render(req.params.hotelId + '/checkin/checkin_3', {
+		        static_path: '',
+		        theme: process.env.THEME || 'flatly',
+		        flask_debug: process.env.FLASK_DEBUG || 'false',
+		        hotel_id: req.params.hotelId,
+		        behaviorList: JSON.parse(results[0]),
+		        error_msg: req.flash('error')
+		    });
+    	}
 		dba.disconnect();
     });    
 }

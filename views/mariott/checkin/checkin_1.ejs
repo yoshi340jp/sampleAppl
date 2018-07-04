@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Check-in</title>
+    <title>Check in (Behavior Request)</title>
 
     <!-- Bootstrap core CSS -->
     <link href="<%= static_path + "/bootstrap/css/theme/" + theme + "/bootstrap.css" %>" rel="stylesheet">
@@ -17,21 +17,24 @@
 
   <body>
 	<div>
-		<lable><%= error_msg %></label>
+		<lable><%- error_msg %></label>
 	</div>
+  	<div>
+  		<%- __('checkin1.header') %>
+  	</div>
 
-    <form action="<%= '/' + hotel_id + '/checkin/checkin2' %>" method="post">
+    <form action="<%- '/' + hotel_id + '/checkin/checkin2' %>" method="post">
       <div>
-          <label>Gender</label>
-          <input type="radio" id="gender" name="gender" value="male" <%if (gender == 'male'){ %>checked="checked"<% } %> />男
-          <input type="radio" id="gender" name="gender" value="femail" <%if (gender == 'femail'){ %>checked="checked"<% } %>/>女          
+          <label><%= __('checkin1.gender') %></label>
+          <input type="radio" id="gender" name="gender" value="male" <%if (gender == 'male'){ %>checked="checked"<% } %> /><%= __('checkin1.male') %>
+          <input type="radio" id="gender" name="gender" value="femail" <%if (gender == 'femail'){ %>checked="checked"<% } %>/><%= __('checkin1.female') %>          
       </div>
       <div>
-          <label>Room Number</label>
+          <label><%= __('checkin1.roomNo') %></label>
           <input type="text" id="roomNo" name="roomNo" value="<%= roomNo %>"/>
       </div>
       <div>
-          <input type="submit" id="next" value="Proceed"/>
+          <input type="submit" id="next" value="<%= __('checkin1.proceed') %>"/>
       </div>
   </form>    
   </body>

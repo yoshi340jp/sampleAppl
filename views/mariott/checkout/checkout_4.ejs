@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Check in (Behavior Request)</title>
+    <title>Check-out/After Stay (Behavior Feedback)</title>
     
     <!-- Bootstrap core CSS -->
     <link href="<%= static_path + "/bootstrap/css/theme/" + theme + "/bootstrap.css" %>" rel="stylesheet">
@@ -21,11 +21,11 @@
 
   <body>
   	<div>
-  		<%- __('checkin4.header') %>
+  		<%- __('checkout4.header') %>
   	</div>
     <form action="<%= '/' + hotel_id + '/menu' %>" method="post">
       <div>
-          <input type="submit" id="reset" value="<%= __('checkin4.reset') %>"/>
+          <input type="submit" id="reset" value="<%= __('checkout4.reset') %>"/>
       </div>
   </form>    
 

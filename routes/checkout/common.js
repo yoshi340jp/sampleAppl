@@ -5,7 +5,7 @@ var router = express.Router({mergeParams:true});
 var auth = require(process.cwd() + '/common/auth');
 
 router.get('/',auth.authorize(), function(req, res){
-    res.redirect('/' + req.params.hotelId + '/checkin/checkin1');
+    res.redirect('/' + req.params.hotelId + '/checkout/checkout1');
 });	
   
 //Prepare for using module as router

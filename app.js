@@ -81,7 +81,7 @@ if (cluster.isMaster) {
         console.log("session2" +  i18n.getLocale(req));
       }else{
     	i18n.setLocale(req, req.session.locale);
-    	console.log("session3" +  i18n.getLocale(req));    	  
+    	console.log("session3" +  i18n.getLocale(req) + ":" + req.session.locale);    	  
       }
       next();
     });
@@ -89,10 +89,12 @@ if (cluster.isMaster) {
     // routingの設定
     var router_root = require('./routes/');
     var router_checkin = require('./routes/checkin/');    
+    var router_checkout = require('./routes/checkout/');    
     var router_api = require('./routes/v1/');
 
     app.use('/:hotelId/', router_root);
     app.use('/:hotelId/checkin/', router_checkin);
+    app.use('/:hotelId/checkout/', router_checkout);
     app.use('/api/:hotelId/', router_api);
 
     //認証用Request処理

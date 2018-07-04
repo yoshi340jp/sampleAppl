@@ -2,7 +2,7 @@
 <html >
   <head>
     <meta charset="UTF-8">
-    <title>menu</title>
+    <title>Selection Menu</title>
  
     <!-- Bootstrap core CSS -->
     <link href="<%= static_path + "/bootstrap/css/theme/" + theme + "/bootstrap.css" %>" rel="stylesheet">
@@ -15,8 +15,10 @@
   </head>
   
   <body>
+  	<div>
+  		<%- __('menu.header') %>
+  	</div>
      <div>
-     <h1>menu</h1>
 	    <form action="" method="post">
 	      <div>
 	          <input type="button" id="checkin" value="Check-in"/>
@@ -41,7 +43,7 @@
     });
 
     $("#checkout").click(function(event){
-		$('form').attr('action', '<%=  "/" + hotel_id + "/checkout/" %>');
+		$('form').attr('action', '<%=  "/" + hotel_id + "/checkout/checkout1" %>');
 		$('form').submit();
     });    
     //-->

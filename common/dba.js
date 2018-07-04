@@ -29,7 +29,8 @@
 	};
 	
 	exports.selectPK = function(queryString,param,callback){
-		console.log(queryString);
+		var sql = mysql.format(queryString, param);
+		console.log(sql);
 		client.query(queryString, param,function(err, result) {
 			if(err) {
 				console.error('error running query', err);
@@ -67,6 +68,8 @@
 	};
 
 	exports.update = function(queryString, param,callback){
+		var sql = mysql.format(queryString, param);
+		console.log(sql);
 		client.query(queryString, param, function(err, result){
 			if(err) {
 				console.log(err);

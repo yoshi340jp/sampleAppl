@@ -1,17 +1,55 @@
 {
+	"login": {
+		"header": "Welcome! <BR/><BR/> Please log in to begin using system.",
+		"userName": "Username:",
+		"password": "Password:",
+		"proceed": "Proceed"
+	},
+	"menu": {
+		"header": "Please choose which feature you'd like to use:"
+	},
+	"checkin1": {
+		"header": "Hello",
+		"gender": "Guest Gender:",
+		"male": "Male",
+		"female": "Female",
+		"roomNo": "Please Enter Room Number",
+		"proceed": "Proceed"
+	},
 	"checkin2": {
-		"header":"Welcome! To improve our service, please enter your information",
+		"header": "Welcome!<BR/> To improve our service, please enter your information",
 		"age": "Age",
 		"country": "Original country",
 		"language": "Language",
 		"proceed": "Proceed"
 	},
 	"checkin3": {
-		"header":"We want to make sure sure you experience true Omotenash. Please select the top 3 things you would like",
+		"header": "We want to make sure sure you experience true Omotenash. <BR/>Please select the top 3 things you would like",
 		"proceed": "Proceed"
 	},
-	"checkin4":{
-		"header":"Thank you! At the end of your stay, please let us know how we do!",
-		"reset":"Reset"
+	"checkin4": {
+		"header": "Thank you! <BR/>At the end of your stay, <BR/>please let us know how we do!",
+		"reset": "Reset"
+	},
+	"checkout1": {
+		"header": "Thank you for staying with us!<BR/>While you wait, why don't you tell us how we did?",
+		"roomNo": "Please enter your room number",
+		"checkinDate": "Check-in Date",
+		"language": "Language",
+		"proceed": "Proceed"
+	},
+	"checkout2": {
+		"header": "We hope enjoyed your stay!",
+		"rank": "How was your VIP experience?",
+		"proceed": "proceed"
+	},
+	"checkout3": {
+		"header": "Do you have any other commnets?<BR/>Feel free to be honest",
+		"comment": "Comment",
+		"proceed": "Proceed"
+	},
+	"checkout4": {
+		"header": "Thank you!<BR/><BR/> We'll use this information to adjust our service.<BR/><BR/> We hope to see you again soon!",
+		"reset": "Reset"
 	}
 }
