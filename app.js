@@ -1,9 +1,5 @@
 'use strict';
-<<<<<<< HEAD
 
-=======
->>>>>>> branch 'master' of https://github.com/yoshi340jp/sampleAppl.git
-// TEST CODE_1
 // Include the cluster module
 var cluster = require('cluster');
 
