@@ -90,11 +90,13 @@ if (cluster.isMaster) {
     var router_root = require('./routes/');
     var router_checkin = require('./routes/checkin/');    
     var router_checkout = require('./routes/checkout/');    
+    var router_lookup = require('./routes/guest-lookup/');    
     var router_api = require('./routes/v1/');
 
     app.use('/:hotelId/', router_root);
     app.use('/:hotelId/checkin/', router_checkin);
     app.use('/:hotelId/checkout/', router_checkout);
+    app.use('/:hotelId/guest-lookup/', router_lookup);
     app.use('/api/:hotelId/', router_api);
 
     //認証用Request処理

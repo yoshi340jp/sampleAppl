@@ -13,7 +13,7 @@ function execute(req, res,updateFlag) {
 
     async.parallel([
     	function(callback){
-    		var queryString = 'SELECT ID,BEHAVIOR_VAL FROM SPECIFIC_BEHABIOR WHERE LANG = ? ORDER BY RAND()';
+    		var queryString = 'SELECT ID,BEHAVIOR_VAL FROM SPECIFIC_BEHAVIOR WHERE LANG = ? ORDER BY RAND()';
     		var param = [String(req.session.locale).toUpperCase()];
 	    	dba.selectLists(queryString, param,function(err,result){
 	    		if(err){

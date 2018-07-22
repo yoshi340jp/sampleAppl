@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>During Stay (Behavior Lookup)</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="<%= static_path + '/bootstrap/css/theme/' + theme + '/bootstrap.css' %>" rel="stylesheet"/>
+
+    <!-- Custom styles for this template -->
+    <link href="<%= static_path + '/bootstrap/css/jumbotron-narrow.css' %>" rel="stylesheet"/>
+
+	<!-- JQuery.js -->
+    <script src="<%= static_path + '/jquery/jquery-1.11.3.min.js' %>"></script>
+  </head>
+
+  <body>
+	<div>
+		<label><%- error_msg %></label>
+	</div>
+
+  	<div>
+  		<%- __('lookup2.header') %>
+  	</div>
+
+	<% for (var i in behaviorList) { %>		
+  		<div>
+	    	<form action="<%= '/' + hotel_id + '/guest-lookup/lookup3/' %>" method="post">
+			  <div>				
+          		<button type="submit" id="behavior1" ><%= behaviorList[i].BEHAVIOR_VAL %></button>
+			    <input type="hidden" id="key" name="key" value="<%= behaviorList[i].ID %>"/>
+			  </div>
+			  <div>
+          		<label><%= behaviorList[i].SHORT_DESCRIPTION %></label>
+          	  </div>
+	      	</form>
+  		</div>
+    <% } %>	
+    <form action="<%= '/' + hotel_id + '/menu' %>" method="post">
+      <div>
+          <input type="submit" id="reset" value="<%= __('lookup2.reset') %>"/>
+      </div>
+    </form>    
+  </body>
+</html>

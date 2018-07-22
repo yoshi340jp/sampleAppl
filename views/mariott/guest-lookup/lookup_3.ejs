@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>During Stay (Behavior Lookup)</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="<%= static_path + '/bootstrap/css/theme/' + theme + '/bootstrap.css' %>" rel="stylesheet"/>
+
+    <!-- Custom styles for this template -->
+    <link href="<%= static_path + '/bootstrap/css/jumbotron-narrow.css' %>" rel="stylesheet"/>
+
+	<!-- JQuery.js -->
+    <script src="<%= static_path + '/jquery/jquery-1.11.3.min.js' %>"></script>
+  </head>
+
+  <body>
+	<div>
+		<label><%- error_msg %></label>
+	</div>
+
+  	<div>
+  		<%- __('lookup3.header') %>
+  	</div>
+
+  	<div>
+  		<%= behavior.DONT_UNDERSTAND %>
+  	</div>
+
+    <form action="" method="post">	
+      <input type="hidden" id="action" name="action" value=""/>
+	  <label>Neutral Interaction🙂</label>  	
+      <div>
+		<input type="button" id="neutral_can" value="Can Do Something✅"/>
+		<label><%= behavior.NUTRAL_CAN_DO %></label>
+		<input type="button" id="neutral_cannot" value="Can't Do Something❌"/>
+		<label><%= behavior.NUTRAL_CANNOT_DO %></label>
+      </div>
+	  <label>Urgent Interaction😡</label>  	
+      <div>
+		<input type="button" id="urgent_can" value="Can Do Something✅"/>
+		<label><%= behavior.URGENT_CAN_DO %></label>
+		<input type="button" id="urgent_cannot" value="Can't Do Something❌"/>
+		<label><%= behavior.URGENT_CANNOT_DO %></label>
+      </div>
+      <div>
+  	    <input type="button" id="wait" value="Wait">
+	    <label><%= behavior.WAIT %></lable>
+	  </div>
+	  <div>
+  	    <input type="button" id="option1" value="<%= behavior.ALTERNATIVE_OPTION %>"/>
+  	    <input type="button" id="option2" value="<%= behavior.OPTION_1 %>"/>
+  	    <input type="button" id="option3" value="<%= behavior.OPTION_2 %>"/>	    
+	 </div> 
+      <div>
+          <input type="button" id="back" value="<%= __('lookup3.back') %>"/>
+          <input type="button" id="reset" value="<%= __('lookup3.reset') %>"/>	
+      </div>
+	</form>
+  <script>
+    <!--
+    $("#neutral_can").click(function(event){
+		$('form').attr('action', '<%= '/' + hotel_id + "/guest-lookup/lookup4" %>');
+		$('#action').attr('value','1');
+		$('form').submit();
+    });    
+    $("#neutral_cannot").click(function(event){
+		$('form').attr('action', '<%= '/' + hotel_id + "/guest-lookup/lookup4" %>');
+		$('#action').attr('value','2');
+		$('form').submit();
+    });    
+    $("#urgent_can").click(function(event){
+		$('form').attr('action', '<%= '/' + hotel_id + "/guest-lookup/lookup4" %>');
+		$('#action').attr('value','3');
+		$('form').submit();
+    });    
+    $("#urgent_cannot").click(function(event){
+		$('form').attr('action', '<%= '/' + hotel_id + "/guest-lookup/lookup4" %>');
+		$('#action').attr('value','4');
+		$('form').submit();
+    });    
+    $("#wait").click(function(event){
+		$('form').attr('action', '<%= '/' + hotel_id + "/guest-lookup/lookup4" %>');
+		$('#action').attr('value','5');
+		$('form').submit();
+    });    
+
+    $("#back").click(function(event){
+		$('form').attr('action', '<%= '/' + hotel_id + "/guest-lookup/lookup2" %>');
+		$('form').attr('method', 'get');
+		$('form').submit();
+    });    
+    $("#reset").click(function(event){
+		$('form').attr('action', '<%= '/' + hotel_id + "/menu" %>');
+		$('form').submit();
+    });    
+    //-->
+  </script>
+  </body>
+</html>

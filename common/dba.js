@@ -48,6 +48,7 @@
 			if(err) {
 				callback(err,null);
 			}else{
+				console.log(result);
 				callback(null,JSON.stringify(result));
 			}
 		});

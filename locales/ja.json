@@ -51,5 +51,20 @@
 	"checkout4": {
 		"header": "ありがとうございました。<BR/><BR/>お客様からのフィードバックを元にサービス改善に努めて参ります。<BR/><BR/>またのご利用を楽しみにお待ちしております。",
 		"reset": "リセット"
+	},
+	"lookup1": {
+		"header": "lookup1.header",
+		"roomNo": "Please Enter Room Number:",
+		"checkinDate": "Check-in Date:",
+		"proceed": "Proceed"
+	},
+	"lookup2": {
+		"header": "Here is what the guest is looking for:",
+		"reset": "Reset"
+	},
+	"lookup3": {
+		"header": "lookup3.header",
+		"back": "Back",
+		"reset": "Reset"
 	}
 }
