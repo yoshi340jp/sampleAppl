@@ -15,7 +15,7 @@ function execute(req, res){
     async.parallel([
     	function(callback){
     		//Login Userの情報をsessionに格納
-			if(typeof req.session.staff === 'undefined'){		
+			if(typeof req.session.staff === 'undefined' || req.session.staff === null){		
 				AWS.config.region = process.env.COGNITO_REGIONID;
 				var poolData = {
 				  UserPoolId : process.env.COGNITO_USER_POOLID,
