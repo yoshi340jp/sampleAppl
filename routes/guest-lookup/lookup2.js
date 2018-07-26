@@ -15,7 +15,7 @@ function execute(req, res, flag) {
     async.parallel([
     	function(callback){
     		var queryString = "SELECT ID, BEHAVIOR_VAL, SHORT_DESCRIPTION FROM SPECIFIC_BEHAVIOR A,(SELECT BEHAVIOR_1,BEHAVIOR_2,BEHAVIOR_3 FROM INDIVISUAL_INFO WHERE SITE_CODE = ? AND CHECK_IN_DATE = ? AND ROOM_NUM=? AND INDIVISUAL_ID = ?) B WHERE A.ID IN(B.BEHAVIOR_1,B.BEHAVIOR_2,B.BEHAVIOR_3)";
-    		var param = [req.session.indivisual.siteCode,req.session.indivisual.checkinDate,req.session.indivisual.roomNo,req.session.indivisual.indivisualId];
+    		var param = [req.session.staff.siteCode,req.session.indivisual.checkinDate,req.session.indivisual.roomNo,req.session.staff.indivisualId];
 
     		dba.selectLists(queryString, param, function(err,result){
 	    		if(err){

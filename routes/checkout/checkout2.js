@@ -17,7 +17,7 @@ function execute(req, res, flag) {
     	function(callback){
     		if(flag){
 	    		var queryString = "SELECT * FROM INDIVISUAL_INFO WHERE SITE_CODE = ? AND CHECK_IN_DATE = ? AND ROOM_NUM=? AND INDIVISUAL_ID = ?";
-	    		var param = [req.session.indivisual.siteCode,req.session.indivisual.checkinDate,req.session.indivisual.roomNo,req.session.indivisual.indivisualId];
+	    		var param = [req.session.staff.siteCode,req.session.indivisual.checkinDate,req.session.indivisual.roomNo,req.session.staff.indivisualId];
 	
 	    		dba.selectPK(queryString, param, function(err,result){
 	    			if(err){
@@ -39,7 +39,7 @@ function execute(req, res, flag) {
 			if(!result && typeof result === 'undefined'){
 	    		var queryString2 = "INSERT INTO INDIVISUAL_INFO (SITE_CODE,CHECK_IN_DATE,ROOM_NUM,INDIVISUAL_ID,GENDER,CRE_DATE,CRE_USER)VALUES(";
 	    		queryString2 +=	"?,?,?,?,?,now(),?)";
-	    		var param2 = [req.session.indivisual.siteCode,req.session.indivisual.checkinDate ,req.session.indivisual.roomNo,req.session.indivisual.indivisualId,req.session.indivisual.gender,req.session.indivisual.operator];
+	    		var param2 = [req.session.staff.siteCode,req.session.indivisual.checkinDate ,req.session.indivisual.roomNo,req.session.staff.indivisualId,req.session.indivisual.gender,req.session.staff.name];
 	    
 	    		dba.insert(queryString2, param2, function(err,result){
 	    			if(err){

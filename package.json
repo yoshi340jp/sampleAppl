@@ -1,5 +1,5 @@
 {
-  "name": "Elastic-Beanstalk-Sample-App",
+  "name": "VIP-Behaviro-App",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
@@ -14,7 +14,8 @@
     "dotenv": "latest",
     "i18n": "latest",
     "async": "latest",
-    "mysql": "latest"
+    "mysql": "latest",
+    "amazon-cognito-identity-js": "latest"
   },
   "scripts": {
     "start": "node app.js"

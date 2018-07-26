@@ -34,9 +34,10 @@ function execute(req, res, insertFlag) {
     	},
     	function(callback){
     		if(insertFlag){
+    			  console.log("Staff:" + JSON.stringify(req.session.staff));
 	    		var queryString = "INSERT INTO INDIVISUAL_INFO (SITE_CODE,CHECK_IN_DATE,ROOM_NUM,INDIVISUAL_ID,GENDER,CRE_DATE,CRE_USER)VALUES(";
 	    		queryString +=	"?,?,?,?,?,now(),?)";
-	    		var param = [req.session.indivisual.siteCode,req.session.indivisual.checkinDate ,req.session.indivisual.roomNo,req.session.indivisual.indivisualId,req.session.indivisual.gender,req.session.indivisual.operator];
+	    		var param = [req.session.staff.siteCode,req.session.indivisual.checkinDate ,req.session.indivisual.roomNo,req.session.staff.indivisualId,req.session.indivisual.gender,req.session.staff.name];
 	    
 	    		dba.insert(queryString, param, function(err,result){
 	    			if(err){

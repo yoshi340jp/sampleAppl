@@ -8,6 +8,7 @@ module.exports = new CognitoStrategy({
   function(accessToken, idToken, refreshToken, user, err, cb) {
     process.nextTick(function() {
 //        user.expiration = session.getIdToken().getExpiration();
+    	user.token = accessToken;
         cb(null, user);
     });
   }

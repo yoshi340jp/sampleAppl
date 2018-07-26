@@ -16,8 +16,8 @@ function execute(req,res,updateFlag) {
     		if(updateFlag){
 	    		console.log(req.session.indivisual);
 	    		var queryString = "UPDATE INDIVISUAL_INFO SET BEHAVIOR_1 = ?,BEHAVIOR_2=?, BEHAVIOR_3=?,UPD_DATE = NOW(), UPD_USER = ?  WHERE SITE_CODE = ? AND CHECK_IN_DATE = ? AND ROOM_NUM=? AND INDIVISUAL_ID = ?"; 
-	    		var param = [req.session.indivisual.behavior[0],req.session.indivisual.behavior[1],req.session.indivisual.behavior[2],req.session.indivisual.operator,
-	    			req.session.indivisual.siteCode,req.session.indivisual.checkinDate,req.session.indivisual.roomNo,req.session.indivisual.indivisualId];
+	    		var param = [req.session.indivisual.behavior[0],req.session.indivisual.behavior[1],req.session.indivisual.behavior[2],req.session.staff.name,
+	    			req.session.staff.siteCode,req.session.indivisual.checkinDate,req.session.indivisual.roomNo,req.session.staff.indivisualId];
 	    
 	    		dba.update(queryString, param, function(err,result){
 	    			if(err){

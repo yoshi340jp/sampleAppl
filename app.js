@@ -75,13 +75,10 @@ if (cluster.isMaster) {
       if (req.body.language) {
         i18n.setLocale(req, req.body.language);
         req.session.locale = req.body.language;
-        console.log("session" +  i18n.getLocale(req));
       }else if(!req.session.locale){
     	req.session.locale = i18n.getLocale(req);
-        console.log("session2" +  i18n.getLocale(req));
       }else{
     	i18n.setLocale(req, req.session.locale);
-    	console.log("session3" +  i18n.getLocale(req) + ":" + req.session.locale);    	  
       }
       next();
     });
@@ -98,27 +95,6 @@ if (cluster.isMaster) {
     app.use('/:hotelId/checkout/', router_checkout);
     app.use('/:hotelId/guest-lookup/', router_lookup);
     app.use('/api/:hotelId/', router_api);
-
-    //認証用Request処理
-    app.post('/:hotelId/loginauth',function(req, res, next) {
-        passport.authenticate('cognito', {
-            successRedirect: '/' + req.params.hotelId + '/menu',
-            failureRedirect: '/' + req.params.hotelId + '/login',
-            failureFlash: true
-        })(req, res, next);
-    });
-
-    //言語変更用
-    app.post('/:hotelId/langchange', auth.authorize(), function(req, res, next){
-    	console.log("Language change");
-        req.session.locale = req.body.language;
-    	req.session.indivisual.age = req.body.age;		  
-    	req.session.indivisual.country = req.body.country;		  
-    	req.session.indivisual.language = req.body.language; 
-        console.log(req.body.language);
-        console.log("session4" +  i18n.getLocale(req));
-        res.redirect('back');
-    });
     
     //Dummy
     app.get('/option/signup', function(req, res){

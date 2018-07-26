@@ -19,11 +19,13 @@
       }
     },
     "amazon-cognito-identity-js": {
-      "version": "1.21.0",
-      "resolved": "https://registry.npmjs.org/amazon-cognito-identity-js/-/amazon-cognito-identity-js-1.21.0.tgz",
-      "integrity": "sha1-cHsQL3dNmYQ+a+D7nP5y+QozQgQ=",
+      "version": "2.0.16",
+      "resolved": "https://registry.npmjs.org/amazon-cognito-identity-js/-/amazon-cognito-identity-js-2.0.16.tgz",
+      "integrity": "sha1-GpSkONNtmxHqLfh+V2C1uQV7Rzg=",
       "requires": {
-        "aws-sdk": "2.263.1"
+        "buffer": "4.9.1",
+        "crypto-browserify": "1.0.9",
+        "js-cookie": "2.2.0"
       }
     },
     "ambi": {
@@ -169,6 +171,11 @@
       "version": "3.4.4",
       "resolved": "https://registry.npmjs.org/crc/-/crc-3.4.4.tgz",
       "integrity": "sha1-naHpgOO9RPxck79as9ozeNheRms="
+    },
+    "crypto-browserify": {
+      "version": "1.0.9",
+      "resolved": "https://registry.npmjs.org/crypto-browserify/-/crypto-browserify-1.0.9.tgz",
+      "integrity": "sha1-zFRJaF37hesRyYKKzHy4erW7/MA="
     },
     "csextends": {
       "version": "1.2.0",
@@ -533,6 +540,11 @@
       "resolved": "https://registry.npmjs.org/jmespath/-/jmespath-0.15.0.tgz",
       "integrity": "sha1-o/Iiqarp+Wb10nx5ZRDigJF2Qhc="
     },
+    "js-cookie": {
+      "version": "2.2.0",
+      "resolved": "https://registry.npmjs.org/js-cookie/-/js-cookie-2.2.0.tgz",
+      "integrity": "sha1-Gywnmm7s44ChIWi5JIUmWzWx7/s="
+    },
     "jsbn": {
       "version": "1.1.0",
       "resolved": "https://registry.npmjs.org/jsbn/-/jsbn-1.1.0.tgz",
@@ -720,6 +732,16 @@
         "passport-strategy": "1.0.0",
         "sjcl": "1.0.7",
         "util": "0.10.4"
+      },
+      "dependencies": {
+        "amazon-cognito-identity-js": {
+          "version": "1.21.0",
+          "resolved": "https://registry.npmjs.org/amazon-cognito-identity-js/-/amazon-cognito-identity-js-1.21.0.tgz",
+          "integrity": "sha1-cHsQL3dNmYQ+a+D7nP5y+QozQgQ=",
+          "requires": {
+            "aws-sdk": "2.263.1"
+          }
+        }
       }
     },
     "passport-strategy": {

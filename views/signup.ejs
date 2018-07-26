@@ -35,6 +35,14 @@
   <input type="password" id="inputPassword" class="form-control" placeholder="Password" required></input>
   <label for="inputEmail" class="sr-only">メールアドレス</label>
   <input type="text" id="inputEmail" class="form-control" placeholder="E-mail Address" required></input>
+  <label for="language" class="sr-only">Language</label>
+  <input type="text" id="language" class="form-control" placeholder="Language" required></input>
+  <label for="siteID" class="sr-only">Site Identification</label>
+  <input type="text" id="siteID" class="form-control" placeholder="Site Identification" required></input>
+  <label for="indivisualID" class="sr-only">Indivisual Identification</label>
+  <input type="text" id="indivisualID" class="form-control" placeholder="Indivisual Identification" required></input>
+  <label for="mgmntLevel" class="sr-only">Management Level</label>
+  <input type="text" id="mgmntLevel" class="form-control" placeholder="Management Level" required></input>
   <br/>
   <input type="button" class="btn btn-lg btn-primary btn-bloc" id="user_add_btn" value="ユーザーを作成する"></input>
 </form>
@@ -61,16 +69,44 @@
 <script>
 <!--
 $('#user_add_btn').click(function() {
+  attributeList = [];
   username = $("#inputUsername").val();
   password = $("#inputPassword").val();
   email = $("#inputEmail").val();
   if(!username || !password || !email) { return false; }
+
   var dataEmail = {
     Name : 'email',
     Value : email
   };
-
   attributeList.push(dataEmail);
+
+  var dataLanguage = {
+    Name : 'custom:language',
+    Value : $("#language").val()
+  };
+  attributeList.push(dataLanguage);
+
+  var dataSiteId = {
+	Name : 'custom:siteCode',
+ 	Value : $("#siteID").val()
+  };
+  attributeList.push(dataSiteId);
+
+  var dataIndivisualId = {
+	Name : 'custom:indivisualID',
+ 	Value : $("#indivisualID").val()
+  };
+  attributeList.push(dataIndivisualId);
+
+  var dataMgmtLevel = {
+	Name : 'custom:managementLevel',
+ 	Value : $("#mgmntLevel").val()
+  };
+  attributeList.push(dataMgmtLevel);
+
+  
+  alert(attributeList);
 
   userPool.signUp(username, password, attributeList, null, function(err, result){
       if (err) {
@@ -79,7 +115,8 @@ $('#user_add_btn').click(function() {
           message_class = "alert-danger";
       } else {
           cognitoUser = result.user;
-          console.log('user name is ' + cognitoUser.getUsername());
+          console.log('user name is ' + cognitoUser);
+          alert(cognitoUser);
           message_text = cognitoUser.getUsername() + "が作成されました";
           message_class = "alert-success";
       }    
