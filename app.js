@@ -105,6 +105,15 @@ if (cluster.isMaster) {
         });
     });
 
+    //Dummy
+    app.get('/option/updateAttribute', function(req, res){
+        res.render('updateAttribute', {
+            static_path: '',
+            theme: process.env.THEME || 'flatly',
+            flask_debug: process.env.FLASK_DEBUG || 'false'
+        });
+    });
+
     var port = process.env.PORT || 3000;
 
     var server = app.listen(port, function () {
