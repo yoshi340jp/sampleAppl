@@ -1,7 +1,8 @@
 var router = require('./lookup3');
 //認証用モジュールのロード
 var auth = require(process.cwd() + '/common/auth');
-
+//Utilモジュールのロード
+var util = require(process.cwd() + '/common/util');
 //async モジュールのインポート
 var async = require('async');
 
@@ -67,7 +68,7 @@ router.post('/lookup2', auth.authorize(), function(req,res){
 
 	if(req.body.checkinDate) {
 		req.session.indivisual.checkinDate = req.body.checkinDate;		  
-		if(isNaN(req.body.checkinDate)){
+		if(!util.isYYYYMMDD(req.body.checkinDate)){
 			req.flash('error','チェックイン日はyyyymmddの形式で入力してください。<BR/>');
 			errflag = true;		  
 		}

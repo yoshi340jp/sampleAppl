@@ -1,21 +1,14 @@
 var router = require('./checkin3');
 //認証用モジュールのロード
 var auth = require(process.cwd() + '/common/auth');
+//Utilモジュールのロード
+var util = require(process.cwd() + '/common/util');
 
 //async モジュールのインポート
 var async = require('async');
 
 //DB用モジュールのロード
 var dba = require(process.cwd() + '/common/dba');
-
-function getNowYMD(){
-	  var dt = new Date();
-	  var y = dt.getFullYear();
-	  var m = ("00" + (dt.getMonth()+1)).slice(-2);
-	  var d = ("00" + dt.getDate()).slice(-2);
-	  var result = y +  m + d;
-	  return result;
-	}
 
 function execute(req, res, insertFlag) {
 	dba.connect();
@@ -78,7 +71,7 @@ function execute(req, res, insertFlag) {
 //POST Request
 router.post('/checkin2', auth.authorize(), function(req,res){
 	var errflag = false;
-	req.session.indivisual.checkinDate = getNowYMD();
+	req.session.indivisual.checkinDate = util.getNowYMD();
 	if(req.body.gender) {
 		 req.session.indivisual.gender = req.body.gender;
 		 console.log(req.body.gender);
