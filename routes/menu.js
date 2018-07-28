@@ -34,7 +34,7 @@ function execute(req, res){
 				  else{
 					  req.session.staff = {name:req.user.username};
 					  var userAttributes = data.UserAttributes;
-					  for (var i in userAttributes) {
+					  for (var i=0; i<userAttributes.length; i++) {
 			            if(userAttributes[i].Name === 'custom:siteCode'){
 			            	req.session.staff.siteCode = userAttributes[i].Value;
 			            }
@@ -51,6 +51,7 @@ function execute(req, res){
 			            	req.session.staff.managementLevel = userAttributes[i].Value;
 			            }
 					  }
+					  console.log("Staff" + JSON.stringify(req.session.staff));
      				  callback(null,'1');
 				  }
 	
