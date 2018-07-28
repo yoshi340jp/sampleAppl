@@ -12,17 +12,14 @@ if (cluster.isMaster) {
 
     // Create a worker for each CPU
     for (var i = 0; i < cpuCount; i += 1) {
-    	console.log(cpuCount);
         cluster.fork();
     }
 
     // Listen for terminating workers
     cluster.on('exit', function (worker) {
-
         // Replace the terminated workers
         console.log('Worker ' + worker.id + ' died :(');
         cluster.fork();
-
     });
 
 // Code to run if we're in a worker process
@@ -84,6 +81,7 @@ if (cluster.isMaster) {
     });
 
     // routingの設定
+    var router_userManage = require('./routes/userManage/');
     var router_root = require('./routes/');
     var router_checkin = require('./routes/checkin/');    
     var router_checkout = require('./routes/checkout/');    
@@ -94,25 +92,8 @@ if (cluster.isMaster) {
     app.use('/:hotelId/checkin/', router_checkin);
     app.use('/:hotelId/checkout/', router_checkout);
     app.use('/:hotelId/guest-lookup/', router_lookup);
+    app.use('/option/', router_userManage);
     app.use('/api/:hotelId/', router_api);
-    
-    //Dummy
-    app.get('/option/signup', function(req, res){
-        res.render('signup', {
-            static_path: '',
-            theme: process.env.THEME || 'flatly',
-            flask_debug: process.env.FLASK_DEBUG || 'false'
-        });
-    });
-
-    //Dummy
-    app.get('/option/updateAttribute', function(req, res){
-        res.render('updateAttribute', {
-            static_path: '',
-            theme: process.env.THEME || 'flatly',
-            flask_debug: process.env.FLASK_DEBUG || 'false'
-        });
-    });
 
     var port = process.env.PORT || 3000;
 
