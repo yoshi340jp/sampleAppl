@@ -13,7 +13,9 @@ var dba = require(process.cwd() + '/common/dba');
 function execute(req, res, insertFlag) {
 	dba.connect();
 
-    async.parallel([
+	dba.beginTransaction();
+	
+	async.parallel([
     	function(callback){
     		var queryString;
     		var language;
@@ -22,12 +24,13 @@ function execute(req, res, insertFlag) {
     		}else if(req.session.locale === 'ja'){
     			language = 'JPNAME';
     		}
-    		queryString = 'SELECT SHORTNAME, ' + language + ' AS NAME FROM COUNTRY ORDER BY NAME'
+    		queryString = 'SELECT SHORTNAME, ' + language + ' AS NAME FROM COUNTRY ORDER BY NAME';
 	    	dba.selectLists(queryString, null,function(err,result){
 	    		if(err){
+    				console.log(err);
+    	    		req.flash('error',err.sqlMessage);
 	    			callback(err,null);
 	    		}else{
-		    		console.log("res" + result);
 					callback(null,result);
 	    		}
 			});
@@ -41,19 +44,18 @@ function execute(req, res, insertFlag) {
     			language = 'JPNAME';
     		}
     		queryString = 'select A.COUNTRY AS SHORTNAME, B.' + language + ' AS NAME, count(*) AS COUNT FROM INDIVISUAL_INFO A INNER JOIN COUNTRY B WHERE COUNTRY IS NOT NULL AND A.COUNTRY = B.SHORTNAME GROUP BY COUNTRY ORDER BY COUNT DESC LIMIT 0, 5';
-    		console.log("HI"+req.session.locale);
     		dba.selectLists(queryString, null,function(err,result){
 	    		if(err){
+    				console.log(err);
+    	    		req.flash('error',err.sqlMessage);
 	    			callback(err,null);
 	    		}else{
-		    		console.log("res" + result);
 					callback(null,result);
 	    		}
 			});    		
     	},
     	function(callback){
     		if(insertFlag){
-    			  console.log("Staff:" + JSON.stringify(req.session.staff));
 	    		var queryString = "INSERT INTO INDIVISUAL_INFO (SITE_CODE,CHECK_IN_DATE,ROOM_NUM,INDIVISUAL_ID,GENDER,CRE_DATE,CRE_USER)VALUES(";
 	    		queryString +=	"?,?,?,?,?,now(),?)";
 	    		var param = [req.session.staff.siteCode,req.session.indivisual.checkinDate ,req.session.indivisual.roomNo,req.session.staff.indivisualId,req.session.indivisual.gender,req.session.staff.name];
@@ -61,6 +63,7 @@ function execute(req, res, insertFlag) {
 	    		dba.insert(queryString, param, function(err,result){
 	    			if(err){
 	    				console.log(err);
+	    	    		req.flash('error',err.sqlMessage);
 	    				callback(err,null);
 	    			}else{
 	    				callback(null,result);
@@ -74,10 +77,10 @@ function execute(req, res, insertFlag) {
 	function(err,results){
     	if(err){
     		console.log(err);
-    		req.flash('error',err.sqlMessage);
+    		dba.rollback();
             res.redirect('back');
     	}else{
-	    	console.log("render"+ results);
+    		dba.commit();
 			res.render(req.params.hotelId + '/checkin/checkin_2', {
 		        static_path: '',
 		        theme: process.env.THEME || 'flatly',
@@ -93,6 +96,7 @@ function execute(req, res, insertFlag) {
     	}
 		dba.disconnect();
     });    
+
 }
 
 //POST Request
@@ -101,7 +105,6 @@ router.post('/checkin2', auth.authorize(), function(req,res){
 	req.session.indivisual.checkinDate = util.getNowYMD();
 	if(req.body.gender) {
 		 req.session.indivisual.gender = req.body.gender;
-		 console.log(req.body.gender);
 	}else{
 		req.flash('error','性別を選択してください');
 		errflag = true;

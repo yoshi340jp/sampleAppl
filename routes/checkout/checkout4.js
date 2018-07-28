@@ -11,10 +11,11 @@ var dba = require(process.cwd() + '/common/dba');
 function execute(req, res, updateFlag) {
 	dba.connect();
 
+	dba.beginTransaction();
+
     async.parallel([
     	function(callback){
     		if(updateFlag){
-	    		console.log(req.session.indivisual);
 	    		var queryString = "UPDATE INDIVISUAL_INFO SET COMMENT=?,UPD_DATE = NOW(), UPD_USER = ?  WHERE SITE_CODE = ? AND CHECK_IN_DATE = ? AND ROOM_NUM=? AND INDIVISUAL_ID = ?"; 
 	    		var param = [req.session.indivisual.comment,req.session.staff.name,
 	    			req.session.staff.siteCode,req.session.indivisual.checkinDate,req.session.indivisual.roomNo,req.session.staff.indivisualId];
@@ -22,6 +23,7 @@ function execute(req, res, updateFlag) {
 	    		dba.update(queryString, param, function(err,result){
 	    			if(err){
 	    				console.log(err);
+	    	    		req.flash('error',err.sqlMessage);
 	    				callback(err,null);
 	    			}else{
 	    				callback(null,result);
@@ -35,11 +37,11 @@ function execute(req, res, updateFlag) {
 	function(err,results){
     	if(err){
     		console.log(err);
-    		req.flash('error',err.sqlMessage);
+    		dba.rollback();
             res.redirect('back');
     	}else{
-	        console.log("render"+ results);
-	        res.render(req.params.hotelId + '/checkout/checkout_4', {
+    		dba.commit();
+    		res.render(req.params.hotelId + '/checkout/checkout_4', {
 	            static_path: '',
 	            theme: process.env.THEME || 'flatly',
 	            flask_debug: process.env.FLASK_DEBUG || 'false',

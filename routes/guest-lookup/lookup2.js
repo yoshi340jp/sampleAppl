@@ -12,6 +12,8 @@ var dba = require(process.cwd() + '/common/dba');
 function execute(req, res, flag) {
 	//該当データが存在する場合は、そのデータを取得する。
 	dba.connect();
+	//Transaction Start
+	dba.beginTransaction();
 
     async.parallel([
     	function(callback){
@@ -20,10 +22,16 @@ function execute(req, res, flag) {
 
     		dba.selectLists(queryString, param, function(err,result){
 	    		if(err){
+		    		console.log(err);
+		    		req.flash('error',err.sqlMessage);
 	    			callback(err,null);
 	    		}else{
-		    		console.log("res" + result);
-	    			callback(null,result);
+	        		if((JSON.parse(result)).length === 0){
+	            		req.flash('error',"レコードが存在しません");    			
+	                    callback(true,result);
+	        		}else{
+	        			callback(null,result);
+	        		}
 	    		}
 	    	});
     	},
@@ -31,23 +39,19 @@ function execute(req, res, flag) {
 	function(err, result){
     	if(err){
     		console.log(err);
-    		req.flash('error',err.sqlMessage);
+    		dba.rollback();
             res.redirect('back');
     	}else{
-    		if((JSON.parse(result)).length === 0){
-        		req.flash('error',"レコードが存在しません");    			
-                res.redirect('back');
-    		}else{
-			    res.render(req.params.hotelId + '/guest-lookup/lookup_2', {
-			        static_path: '',
-			        theme: process.env.THEME || 'flatly',
-			        flask_debug: process.env.FLASK_DEBUG || 'false',
-			        hotel_id: req.params.hotelId,
-			        behaviorList: JSON.parse(result),
-			        error_msg: req.flash('error')
-			    });
-    		}
-    	}
+			dba.commit();
+			res.render(req.params.hotelId + '/guest-lookup/lookup_2', {
+		        static_path: '',
+		        theme: process.env.THEME || 'flatly',
+		        flask_debug: process.env.FLASK_DEBUG || 'false',
+		        hotel_id: req.params.hotelId,
+		        behaviorList: JSON.parse(result),
+		        error_msg: req.flash('error')
+		    });
+		}
 		dba.disconnect();
     });    	
 }

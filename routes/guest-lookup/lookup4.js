@@ -1,16 +1,16 @@
 var router = require('./common');
 //認証用モジュールのロード
 var auth = require(process.cwd() + '/common/auth');
-
 //async モジュールのインポート
 var async = require('async');
-
 //DB用モジュールのロード
 var dba = require(process.cwd() + '/common/dba');
 
 function execute(req, res, flag) {
 	//該当データが存在する場合は、そのデータを取得する。
 	dba.connect();
+	//Transaction Start
+	dba.beginTransaction();
 
     async.parallel([
     	function(callback){
@@ -19,6 +19,8 @@ function execute(req, res, flag) {
 
     		dba.insert(queryString, param, function(err,result){
 	    		if(err){
+	    			console.log(err);
+	        		req.flash('error',err.sqlMessage);
 	    			callback(err,null);
 	    		}else{
 	    			callback(null,result);
@@ -29,9 +31,10 @@ function execute(req, res, flag) {
 	function(err, result){
     	if(err){
     		console.log(err);
-    		req.flash('error',err.sqlMessage);
+    		dba.rollback();
             res.redirect('back');
     	}else{
+    		dba.commit();
             res.redirect('back');
 		}
 		dba.disconnect();
@@ -40,10 +43,9 @@ function execute(req, res, flag) {
 
 //POST Request
 router.post('/lookup4', auth.authorize(), function(req,res){
-	console.log("action:" + req.body.action);
 	req.session.indivisual.actionId = req.body.action;
 	execute(req,res,true);
-	});
+});
 
 //GET Request
 router.get('/lookup4', auth.authorize(), function(req,res){execute(req,res,false);});

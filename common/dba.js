@@ -17,12 +17,36 @@
 	
 		client.connect(function(err) {
 			if(err) {
-				return console.error('could not connect to postgres', err);
+				return console.error('could not connect to MySQL', err);
 			}
-			console.log("Connected!!");
+			console.log("DB Connected!!");
 		});
 	};
-			
+
+	exports.beginTransaction = function(){
+		client.beginTransaction(function(err){
+			if(err) {
+				return console.error('could not start transaction', err);
+			}
+			console.log("Start Transaction");			
+		});
+	};
+
+	exports.commit = function(){
+        client.commit(function(err, result) {
+            console.log("Commit Transaction");
+         });
+	};
+	
+	exports.rollback = function(){
+		client.rollback(function(err, result) {
+			if(err) {
+				console.log("ROLLBACK Failed");
+			}
+			console.log("ROLLBACK successful!");
+		});		
+	};
+	
 	exports.disconnect = function(){
 		client.end();
 		console.log("Disconnect");
@@ -33,9 +57,10 @@
 		console.log(sql);
 		client.query(queryString, param,function(err, result) {
 			if(err) {
-				console.error('error running query', err);
+				console.log(err);
 				callback(err,null);
 			}else{
+				console.log(result);
 				callback(null,JSON.stringify(result[0]));
 			}
 		});
@@ -46,6 +71,7 @@
 		console.log(sql);
 		client.query(queryString, param,function(err, result) {
 			if(err) {
+				console.log(err);
 				callback(err,null);
 			}else{
 				console.log(result);

@@ -3,7 +3,6 @@ var router = require('./loginauth');
 var auth = require(process.cwd() + '/common/auth');
 
 var AWS = require('aws-sdk');
-
 //async モジュールのインポート
 var async = require('async');
 
@@ -52,7 +51,6 @@ function execute(req, res){
 			            	req.session.staff.managementLevel = userAttributes[i].Value;
 			            }
 					  }
-		  			  console.log("Staff:" + JSON.stringify(req.session.staff));
      				  callback(null,'1');
 				  }
 	

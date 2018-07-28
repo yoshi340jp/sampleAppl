@@ -13,6 +13,8 @@ function execute(req, res, flag) {
 	//該当データが存在する場合は、そのデータを取得する。
 	//存在しない場合は、新規作成する。
 	dba.connect();
+	
+	dba.beginTransaction();
 
     async.waterfall([
     	function(callback){
@@ -22,7 +24,8 @@ function execute(req, res, flag) {
 	
 	    		dba.selectPK(queryString, param, function(err,result){
 	    			if(err){
-	    				console.log("err" + err + result);
+	    				console.log(err);
+	    	    		req.flash('error',err.sqlMessage);
 	    				callback(null,err,null);
 	    			}else{
 	    				callback(null,null,result);
@@ -34,9 +37,10 @@ function execute(req, res, flag) {
     	},
     	function(err, result, callback){
     		if(err){
+				console.log(err);
+	    		req.flash('error',err.sqlMessage);
     			callback(err,result,false,null);
     		}
-    		console.log("res" + result);
 			if(!result && typeof result === 'undefined'){
 	    		var queryString2 = "INSERT INTO INDIVISUAL_INFO (SITE_CODE,CHECK_IN_DATE,ROOM_NUM,INDIVISUAL_ID,GENDER,CRE_DATE,CRE_USER)VALUES(";
 	    		queryString2 +=	"?,?,?,?,?,now(),?)";
@@ -45,6 +49,7 @@ function execute(req, res, flag) {
 	    		dba.insert(queryString2, param2, function(err,result){
 	    			if(err){
 	    				console.log(err);
+	    	    		req.flash('error',err.sqlMessage);
 	    				callback(err,null,false,null);
 	    			}else{
 	    				callback(null,result,true,null);
@@ -58,9 +63,10 @@ function execute(req, res, flag) {
 	function(err, result, errflag, dummy){
     	if(err){
     		console.log(err);
-    		req.flash('error',err.sqlMessage);
+    		dba.rollback();
             res.redirect('back');
     	}else{
+    		dba.commit();
 	        res.render(req.params.hotelId + '/checkout/checkout_2', {
 	            static_path: '',
 	            theme: process.env.THEME || 'flatly',
