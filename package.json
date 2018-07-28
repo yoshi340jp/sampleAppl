@@ -15,6 +15,7 @@
     "i18n": "latest",
     "async": "latest",
     "mysql": "latest",
+    "util": "latest",
     "amazon-cognito-identity-js": "latest"
   },
   "scripts": {

@@ -88,11 +88,11 @@ if (cluster.isMaster) {
     var router_lookup = require('./routes/guest-lookup/');    
     var router_api = require('./routes/v1/');
 
+    app.use('/option/', router_userManage);
     app.use('/:hotelId/', router_root);
     app.use('/:hotelId/checkin/', router_checkin);
     app.use('/:hotelId/checkout/', router_checkout);
     app.use('/:hotelId/guest-lookup/', router_lookup);
-    app.use('/option/', router_userManage);
     app.use('/api/:hotelId/', router_api);
 
     var port = process.env.PORT || 3000;

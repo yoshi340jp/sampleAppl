@@ -1,29 +1,32 @@
 var router = require('./common');
-//認証用モジュールのロード
-var auth = require(process.cwd() + '/common/auth');
-
 //async モジュールのインポート
 var async = require('async');
-
+//認証用モジュールのロード
+var auth = require(process.cwd() + '/common/auth');
+//Utilモジュールのロード
+var util = require(process.cwd() + '/common/util');
 //DB用モジュールのロード
 var dba = require(process.cwd() + '/common/dba');
 
 function execute(req,res,updateFlag) {
+	//DBに接続。
 	dba.connect();
-	
-	dba.beginTransaction();	
+	//Transaction Start
+	dba.beginTransaction();
+	//Localeの設定
+	util.setLocale(req.session.locale);
 
     async.parallel([
     	function(callback){
     		if(updateFlag){
-	    		var queryString = "UPDATE INDIVISUAL_INFO SET BEHAVIOR_1 = ?,BEHAVIOR_2=?, BEHAVIOR_3=?,UPD_DATE = NOW(), UPD_USER = ?  WHERE SITE_CODE = ? AND CHECK_IN_DATE = ? AND ROOM_NUM=? AND INDIVISUAL_ID = ?"; 
+	    		var queryString = 'UPDATE INDIVISUAL_INFO SET BEHAVIOR_1 = ?,BEHAVIOR_2=?, BEHAVIOR_3=?,UPD_DATE = NOW(), UPD_USER = ?  WHERE SITE_CODE = ? AND CHECK_IN_DATE = ? AND ROOM_NUM=? AND INDIVISUAL_ID = ?'; 
 	    		var param = [req.session.indivisual.behavior[0],req.session.indivisual.behavior[1],req.session.indivisual.behavior[2],req.session.staff.name,
 	    			req.session.staff.siteCode,req.session.indivisual.checkinDate,req.session.indivisual.roomNo,req.session.staff.indivisualId];
 	    
 	    		dba.update(queryString, param, function(err,result){
 	    			if(err){
-	    				console.log(err);
-	    	    		req.flash('error',err.sqlMessage);
+	    				console.error(err);
+	    	    		req.flash('error',util.getErrorMessage('DBQueryError'));
 	    				callback(err,null);
 	    			}else{
 	    				callback(null,result);
@@ -36,7 +39,7 @@ function execute(req,res,updateFlag) {
 	],
 	function(err,results){
     	if(err){
-    		console.log(err);
+    		console.error(err);
     		dba.rollback();
             res.redirect('back');
     	}else{
@@ -54,17 +57,20 @@ function execute(req,res,updateFlag) {
 
 //POST Request
 router.post('/checkin4', auth.authorize(), function(req,res){
+	//Localeの設定
+	util.setLocale(req.session.locale);
+
 	var errflag = false;
 	if(req.body.behavior) {
-		var arrayBehavior  = String(req.body.behavior).split(",");
+		var arrayBehavior  = String(req.body.behavior).split(',');
 		if(arrayBehavior.length > 3){
-			req.flash('error',"選択は3つ以内にしてください");
+			req.flash('error',util.getErrorMessage('SelectCountError',[util.getViewName('checkin3','behavior'),3]));
 			errflag = true;
 		}else{
 			req.session.indivisual.behavior = arrayBehavior;
 		}
 	}else{
-		req.flash('error',"振る舞いを選択してください");
+		req.flash('error',util.getErrorMessage('MandatorySelectError',[util.getViewName('checkin3','behavior')]));
 		errflag = true;
 	}
 	if(errflag){

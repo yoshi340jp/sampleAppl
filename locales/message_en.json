@@ -1,0 +1,17 @@
+{
+  "message": {
+    "error": {
+      "NotfoundUser": "UserName(%s) or Password is wrong<BR/>",
+      "AuthError" : "User Authentification Error。Please login again。%s<BR/>",
+      "DatabaseError": "Failed Connection Database。<BR/>%s",
+      "DBQueryError": "Error Occurs during DB processing<BR/>",
+      "DuplicateError": "%s:%s is already exist.<BR/>",
+      "RecodeNotFoundError": "There is no record found<BR/>",
+      "DateFormatError": "Please input %s with yyyyMMdd format<BR/>",
+      "NumberFormatError": "Please input %s in Number format<BR/>",
+      "SelectCountError": "Please select %s less than %d<BR/>",
+      "MandatorySelectError": "Please select %s<BR/>",
+      "MandatoryError": "%s is mandatory<BR/>"
+    }
+  }
+}

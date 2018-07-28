@@ -1,7 +1,7 @@
 var router = require('./loginauth');
 //認証用モジュールのロード
 var auth = require(process.cwd() + '/common/auth');
-
+//AWS用モジュール（Cognito使用のため）
 var AWS = require('aws-sdk');
 //async モジュールのインポート
 var async = require('async');
@@ -28,7 +28,7 @@ function execute(req, res){
 				var provider = new AWS.CognitoIdentityServiceProvider();
 				provider.getUser(params, function(err, data) {
 				  if (err){ 
-					  console.log(err, err.stack);
+					  console.error(err, err.stack);
 					  callback(err,null);
 				  }// an error occurred
 				  else{
@@ -51,10 +51,9 @@ function execute(req, res){
 			            	req.session.staff.managementLevel = userAttributes[i].Value;
 			            }
 					  }
-					  console.log("Staff" + JSON.stringify(req.session.staff));
+					  console.log('Staff' + JSON.stringify(req.session.staff));
      				  callback(null,'1');
-				  }
-	
+				  }	
 				});
 			}else{
 				callback(null,'2');

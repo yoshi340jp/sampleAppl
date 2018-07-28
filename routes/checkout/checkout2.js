@@ -1,31 +1,31 @@
 var router = require('./checkout3');
+//async モジュールのインポート
+var async = require('async');
 //認証用モジュールのロード
 var auth = require(process.cwd() + '/common/auth');
 //Utilモジュールのロード
 var util = require(process.cwd() + '/common/util');
-//async モジュールのインポート
-var async = require('async');
-
 //DB用モジュールのロード
 var dba = require(process.cwd() + '/common/dba');
 
 function execute(req, res, flag) {
-	//該当データが存在する場合は、そのデータを取得する。
-	//存在しない場合は、新規作成する。
+	//DBに接続。
 	dba.connect();
-	
+	//Transaction Start
 	dba.beginTransaction();
+	//Localeの設定
+	util.setLocale(req.session.locale);
 
     async.waterfall([
     	function(callback){
     		if(flag){
-	    		var queryString = "SELECT * FROM INDIVISUAL_INFO WHERE SITE_CODE = ? AND CHECK_IN_DATE = ? AND ROOM_NUM=? AND INDIVISUAL_ID = ?";
+	    		var queryString = 'SELECT * FROM INDIVISUAL_INFO WHERE SITE_CODE = ? AND CHECK_IN_DATE = ? AND ROOM_NUM=? AND INDIVISUAL_ID = ?';
 	    		var param = [req.session.staff.siteCode,req.session.indivisual.checkinDate,req.session.indivisual.roomNo,req.session.staff.indivisualId];
 	
 	    		dba.selectPK(queryString, param, function(err,result){
 	    			if(err){
-	    				console.log(err);
-	    	    		req.flash('error',err.sqlMessage);
+	    				console.error(err);
+	    	    		req.flash('error',util.getErrorMessage('DBQueryError'));
 	    				callback(null,err,null);
 	    			}else{
 	    				callback(null,null,result);
@@ -37,19 +37,19 @@ function execute(req, res, flag) {
     	},
     	function(err, result, callback){
     		if(err){
-				console.log(err);
-	    		req.flash('error',err.sqlMessage);
+				console.error(err);
+	    		req.flash('error',util.getErrorMessage('DBQueryError'));
     			callback(err,result,false,null);
     		}
 			if(!result && typeof result === 'undefined'){
-	    		var queryString2 = "INSERT INTO INDIVISUAL_INFO (SITE_CODE,CHECK_IN_DATE,ROOM_NUM,INDIVISUAL_ID,GENDER,CRE_DATE,CRE_USER)VALUES(";
-	    		queryString2 +=	"?,?,?,?,?,now(),?)";
+	    		var queryString2 = 'INSERT INTO INDIVISUAL_INFO (SITE_CODE,CHECK_IN_DATE,ROOM_NUM,INDIVISUAL_ID,GENDER,CRE_DATE,CRE_USER)VALUES(';
+	    		queryString2 +=	'?,?,?,?,?,now(),?)';
 	    		var param2 = [req.session.staff.siteCode,req.session.indivisual.checkinDate ,req.session.indivisual.roomNo,req.session.staff.indivisualId,req.session.indivisual.gender,req.session.staff.name];
 	    
 	    		dba.insert(queryString2, param2, function(err,result){
 	    			if(err){
-	    				console.log(err);
-	    	    		req.flash('error',err.sqlMessage);
+	    				console.error(err);
+	    	    		req.flash('error',util.getErrorMessage('DBQueryError'));
 	    				callback(err,null,false,null);
 	    			}else{
 	    				callback(null,result,true,null);
@@ -62,7 +62,7 @@ function execute(req, res, flag) {
 	],
 	function(err, result, errflag, dummy){
     	if(err){
-    		console.log(err);
+    		console.error(err);
     		dba.rollback();
             res.redirect('back');
     	}else{
@@ -82,26 +82,29 @@ function execute(req, res, flag) {
 
 //POST Request
 router.post('/checkout2', auth.authorize(), function(req,res){
+	//Localeの設定
+	util.setLocale(req.session.locale);
+
 	var errflag = false;
 	if(req.body.roomNo) {
 		req.session.indivisual.roomNo = req.body.roomNo;		  
 		if(isNaN(req.body.roomNo)){
-			req.flash('error','ルームNoは数字で入力してください。¥n');
+			req.flash('error',util.getErrorMessage('NumberFormatError',[util.getViewName('checkout1','roomNo')]));
 			errflag = true;		  
 		}
 	}else{
-		req.flash('error','ルームNoを入力してください。¥n');
+		req.flash('error',util.getErrorMessage('MandatoryError',[util.getViewName('checkout1','roomNo')]));
 		errflag = true;		  	  
 	}
 
 	if(req.body.checkinDate) {
 		req.session.indivisual.checkinDate = req.body.checkinDate;		  
 		if(!util.isYYYYMMDD(req.body.checkinDate)){
-			req.flash('error','チェックイン日はyyyymmddの形式で入力してください。¥n');
+			req.flash('error',util.getErrorMessage('DateFormatError',[util.getViewName('checkout1','checkinDate')]));
 			errflag = true;		  
 		}
 	}else{
-		req.flash('error','チェックイン日を入力してください¥n');
+		req.flash('error',util.getErrorMessage('MandatoryError',[util.getViewName('checkout1','checkinDate')]));
 		errflag = true;		  	  
 	}
 

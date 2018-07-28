@@ -1,9 +1,9 @@
 {
 	"login": {
 		"header": "Welcome! <BR/><BR/> Please log in to begin using system.",
-		"userName": "Username:",
-		"password": "Password:",
-		"proceed": "Proceed"
+		"userName": "ユーザー名",
+		"password": "パスワード",
+		"proceed": "進む"
 	},
 	"menu": {
 		"header": "Please choose which feature you'd like to use:"
@@ -25,6 +25,7 @@
 	},
 	"checkin3": {
 		"header": "私たちはお客様に満足していただけるサービスろ心がけています。お客様がスタッフに求める「おもてなし」を以下から３つ選んでください。",
+		"behavior" : "「おもてなし」",
 		"proceed": "次へ"
 	},
 	"checkin4": {
@@ -40,7 +41,7 @@
 	},
 	"checkout2": {
 		"header": "楽しんでいただけましたか？",
-		"rank": "VIPおもてなしはいかがでしたか？お客様の評価を是非お聞かせください。",
+		"rank": "評価",
 		"proceed": "進む"
 	},
 	"checkout3": {
@@ -54,17 +55,17 @@
 	},
 	"lookup1": {
 		"header": "lookup1.header",
-		"roomNo": "Please Enter Room Number:",
-		"checkinDate": "Check-in Date:",
-		"proceed": "Proceed"
+		"roomNo": "部屋番号",
+		"checkinDate": "チェックイン日",
+		"proceed": "進む"
 	},
 	"lookup2": {
 		"header": "Here is what the guest is looking for:",
-		"reset": "Reset"
+		"reset": "リセット"
 	},
 	"lookup3": {
 		"header": "lookup3.header",
-		"back": "Back",
-		"reset": "Reset"
+		"back": "戻る",
+		"reset": "リセット"
 	}
 }

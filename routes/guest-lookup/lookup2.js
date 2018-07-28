@@ -1,33 +1,34 @@
 var router = require('./lookup3');
+//async モジュールのインポート
+var async = require('async');
 //認証用モジュールのロード
 var auth = require(process.cwd() + '/common/auth');
 //Utilモジュールのロード
 var util = require(process.cwd() + '/common/util');
-//async モジュールのインポート
-var async = require('async');
-
 //DB用モジュールのロード
 var dba = require(process.cwd() + '/common/dba');
 
 function execute(req, res, flag) {
-	//該当データが存在する場合は、そのデータを取得する。
+	//DBに接続。
 	dba.connect();
 	//Transaction Start
 	dba.beginTransaction();
+	//Localeの設定
+	util.setLocale(req.session.locale);
 
     async.parallel([
     	function(callback){
-    		var queryString = "SELECT ID, BEHAVIOR_VAL, SHORT_DESCRIPTION FROM SPECIFIC_BEHAVIOR A,(SELECT BEHAVIOR_1,BEHAVIOR_2,BEHAVIOR_3 FROM INDIVISUAL_INFO WHERE SITE_CODE = ? AND CHECK_IN_DATE = ? AND ROOM_NUM=? AND INDIVISUAL_ID = ?) B WHERE A.ID IN(B.BEHAVIOR_1,B.BEHAVIOR_2,B.BEHAVIOR_3)";
+    		var queryString = 'SELECT ID, BEHAVIOR_VAL, SHORT_DESCRIPTION FROM SPECIFIC_BEHAVIOR A,(SELECT BEHAVIOR_1,BEHAVIOR_2,BEHAVIOR_3 FROM INDIVISUAL_INFO WHERE SITE_CODE = ? AND CHECK_IN_DATE = ? AND ROOM_NUM=? AND INDIVISUAL_ID = ?) B WHERE A.ID IN(B.BEHAVIOR_1,B.BEHAVIOR_2,B.BEHAVIOR_3)';
     		var param = [req.session.staff.siteCode,req.session.indivisual.checkinDate,req.session.indivisual.roomNo,req.session.staff.indivisualId];
 
     		dba.selectLists(queryString, param, function(err,result){
 	    		if(err){
-		    		console.log(err);
-		    		req.flash('error',err.sqlMessage);
+		    		console.error(err);
+		    		req.flash('error',util.getErrorMessage('DBQueryError'));
 	    			callback(err,null);
 	    		}else{
 	        		if((JSON.parse(result)).length === 0){
-	            		req.flash('error',"レコードが存在しません");    			
+	            		req.flash(util.getErrorMessage('RecodeNotFoundError'));    			
 	                    callback(true,result);
 	        		}else{
 	        			callback(null,result);
@@ -38,7 +39,7 @@ function execute(req, res, flag) {
 	],
 	function(err, result){
     	if(err){
-    		console.log(err);
+    		console.error(err);
     		dba.rollback();
             res.redirect('back');
     	}else{
@@ -58,26 +59,29 @@ function execute(req, res, flag) {
 
 //POST Request
 router.post('/lookup2', auth.authorize(), function(req,res){
+	//Localeの設定
+	util.setLocale(req.session.locale);
+
 	var errflag = false;
 	if(req.body.roomNo) {
 		req.session.indivisual.roomNo = req.body.roomNo;		  
 		if(isNaN(req.body.roomNo)){
-			req.flash('error','ルームNoは数字で入力してください。<BR/>');
+			req.flash('error',util.getErrorMessage('NumberFormatError',[util.getViewName('lookup1','roomNo')]));
 			errflag = true;		  
 		}
 	}else{
-		req.flash('error','ルームNoを入力してください。<BR/>');
+		req.flash('error',util.getErrorMessage('MandatoryError',[util.getViewName('lookup1','roomNo')]));
 		errflag = true;		  	  
 	}
 
 	if(req.body.checkinDate) {
 		req.session.indivisual.checkinDate = req.body.checkinDate;		  
 		if(!util.isYYYYMMDD(req.body.checkinDate)){
-			req.flash('error','チェックイン日はyyyymmddの形式で入力してください。<BR/>');
+			req.flash('error',util.getErrorMessage('DateFormatError',[util.getViewName('lookup1','checkinDate')]));
 			errflag = true;		  
 		}
 	}else{
-		req.flash('error','チェックイン日を入力してください<BR/>');
+		req.flash('error',util.getErrorMessage('MandatoryError',[util.getViewName('lookup1','checkinDate')]));
 		errflag = true;		  	  
 	}
 

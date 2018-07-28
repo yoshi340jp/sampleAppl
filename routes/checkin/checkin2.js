@@ -1,19 +1,20 @@
 var router = require('./checkin3');
+//async モジュールのインポート
+var async = require('async');
 //認証用モジュールのロード
 var auth = require(process.cwd() + '/common/auth');
 //Utilモジュールのロード
 var util = require(process.cwd() + '/common/util');
-
-//async モジュールのインポート
-var async = require('async');
-
 //DB用モジュールのロード
 var dba = require(process.cwd() + '/common/dba');
 
 function execute(req, res, insertFlag) {
+	//DBに接続。
 	dba.connect();
-
+	//Transaction Start
 	dba.beginTransaction();
+	//Localeの設定
+	util.setLocale(req.session.locale);
 	
 	async.parallel([
     	function(callback){
@@ -27,8 +28,8 @@ function execute(req, res, insertFlag) {
     		queryString = 'SELECT SHORTNAME, ' + language + ' AS NAME FROM COUNTRY ORDER BY NAME';
 	    	dba.selectLists(queryString, null,function(err,result){
 	    		if(err){
-    				console.log(err);
-    	    		req.flash('error',err.sqlMessage);
+    				console.error(err);
+    	    		req.flash('error',util.getErrorMessage('DBQueryError'));
 	    			callback(err,null);
 	    		}else{
 					callback(null,result);
@@ -43,11 +44,11 @@ function execute(req, res, insertFlag) {
     		}else if(req.session.locale === 'ja'){
     			language = 'JPNAME';
     		}
-    		queryString = 'select A.COUNTRY AS SHORTNAME, B.' + language + ' AS NAME, count(*) AS COUNT FROM INDIVISUAL_INFO A INNER JOIN COUNTRY B WHERE COUNTRY IS NOT NULL AND A.COUNTRY = B.SHORTNAME GROUP BY COUNTRY ORDER BY COUNT DESC LIMIT 0, 5';
+    		queryString = 'SELECT A.COUNTRY AS SHORTNAME, B.' + language + ' AS NAME, count(*) AS COUNT FROM INDIVISUAL_INFO A INNER JOIN COUNTRY B WHERE COUNTRY IS NOT NULL AND A.COUNTRY = B.SHORTNAME GROUP BY COUNTRY ORDER BY COUNT DESC LIMIT 0, 5';
     		dba.selectLists(queryString, null,function(err,result){
 	    		if(err){
-    				console.log(err);
-    	    		req.flash('error',err.sqlMessage);
+    				console.error(err);
+    	    		req.flash('error',util.getErrorMessage('DBQueryError'));
 	    			callback(err,null);
 	    		}else{
 					callback(null,result);
@@ -56,14 +57,14 @@ function execute(req, res, insertFlag) {
     	},
     	function(callback){
     		if(insertFlag){
-	    		var queryString = "INSERT INTO INDIVISUAL_INFO (SITE_CODE,CHECK_IN_DATE,ROOM_NUM,INDIVISUAL_ID,GENDER,CRE_DATE,CRE_USER)VALUES(";
-	    		queryString +=	"?,?,?,?,?,now(),?)";
+	    		var queryString = 'INSERT INTO INDIVISUAL_INFO (SITE_CODE,CHECK_IN_DATE,ROOM_NUM,INDIVISUAL_ID,GENDER,CRE_DATE,CRE_USER)VALUES(';
+	    		queryString +=	'?,?,?,?,?,now(),?)';
 	    		var param = [req.session.staff.siteCode,req.session.indivisual.checkinDate ,req.session.indivisual.roomNo,req.session.staff.indivisualId,req.session.indivisual.gender,req.session.staff.name];
 	    
 	    		dba.insert(queryString, param, function(err,result){
 	    			if(err){
-	    				console.log(err);
-	    	    		req.flash('error',err.sqlMessage);
+	    				console.error(err);
+	    	    		req.flash('error',util.getErrorMessage('DBQueryError'));
 	    				callback(err,null);
 	    			}else{
 	    				callback(null,result);
@@ -76,7 +77,7 @@ function execute(req, res, insertFlag) {
 	],
 	function(err,results){
     	if(err){
-    		console.log(err);
+    		console.error(err);
     		dba.rollback();
             res.redirect('back');
     	}else{
@@ -101,23 +102,26 @@ function execute(req, res, insertFlag) {
 
 //POST Request
 router.post('/checkin2', auth.authorize(), function(req,res){
+	//Localeの設定
+	util.setLocale(req.session.locale);
+
 	var errflag = false;
 	req.session.indivisual.checkinDate = util.getNowYMD();
 	if(req.body.gender) {
 		 req.session.indivisual.gender = req.body.gender;
 	}else{
-		req.flash('error','性別を選択してください');
+		req.flash('error',util.getErrorMessage('MandatorySelectError',[util.getViewName('checkin1','gender')]));
 		errflag = true;
 	}
 	
 	if(req.body.roomNo) {
 		req.session.indivisual.roomNo = req.body.roomNo;		  
 		if(isNaN(req.body.roomNo)){
-			req.flash('error','ルームNoは数字で入力してください。¥n');
+			req.flash('error',util.getErrorMessage('NumberFormatError',[util.getViewName('checkin1','roomNo')]));
 			errflag = true;		  
 		}
 	}else{
-		req.flash('error','ルームNoを入力してください。¥n');
+		req.flash('error',util.getErrorMessage('MandatoryError',[util.getViewName('checkin1','roomNo')]));
 		errflag = true;		  	  
 	}
 	if(errflag){

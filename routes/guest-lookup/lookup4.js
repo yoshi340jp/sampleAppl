@@ -1,8 +1,10 @@
 var router = require('./common');
-//認証用モジュールのロード
-var auth = require(process.cwd() + '/common/auth');
 //async モジュールのインポート
 var async = require('async');
+//認証用モジュールのロード
+var auth = require(process.cwd() + '/common/auth');
+//Utilモジュールのロード
+var util = require(process.cwd() + '/common/util');
 //DB用モジュールのロード
 var dba = require(process.cwd() + '/common/dba');
 
@@ -11,16 +13,18 @@ function execute(req, res, flag) {
 	dba.connect();
 	//Transaction Start
 	dba.beginTransaction();
+	//Localeの設定
+	util.setLocale(req.session.locale);
 
     async.parallel([
     	function(callback){
-    		var queryString = "INSERT INTO INDIVISUAL_ACTION (SITE_CODE,CHECK_IN_DATE,ROOM_NUM,INDIVISUAL_ID,BEHAVIOR,ACTION_ID,CRE_DATE,CRE_USER)VALUES(?,?,?,?,?,?,now(),?)";
+    		var queryString = 'INSERT INTO INDIVISUAL_ACTION (SITE_CODE,CHECK_IN_DATE,ROOM_NUM,INDIVISUAL_ID,BEHAVIOR,ACTION_ID,CRE_DATE,CRE_USER)VALUES(?,?,?,?,?,?,now(),?)';
     		var param = [req.session.staff.siteCode,req.session.indivisual.checkinDate ,req.session.indivisual.roomNo,req.session.staff.indivisualId,req.session.indivisual.selectKey,req.session.indivisual.actionId,req.session.staff.name];
 
     		dba.insert(queryString, param, function(err,result){
 	    		if(err){
-	    			console.log(err);
-	        		req.flash('error',err.sqlMessage);
+	    			console.error(err);
+	        		req.flash('error',util.getErrorMessage('DBQueryError'));
 	    			callback(err,null);
 	    		}else{
 	    			callback(null,result);
@@ -30,7 +34,7 @@ function execute(req, res, flag) {
 	],
 	function(err, result){
     	if(err){
-    		console.log(err);
+    		console.error(err);
     		dba.rollback();
             res.redirect('back');
     	}else{

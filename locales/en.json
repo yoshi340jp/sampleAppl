@@ -25,6 +25,7 @@
 	},
 	"checkin3": {
 		"header": "We want to make sure sure you experience true Omotenash. <BR/>Please select the top 3 things you would like",
+		"behavior" : "VIP Behavior - Omotenashi",
 		"proceed": "Proceed"
 	},
 	"checkin4": {
@@ -40,7 +41,7 @@
 	},
 	"checkout2": {
 		"header": "We hope enjoyed your stay!",
-		"rank": "How was your VIP experience?",
+		"rank": "VIP rank",
 		"proceed": "proceed"
 	},
 	"checkout3": {

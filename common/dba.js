@@ -41,7 +41,7 @@
 	exports.rollback = function(){
 		client.rollback(function(err, result) {
 			if(err) {
-				console.log("ROLLBACK Failed");
+				console.error("ROLLBACK Failed");
 			}
 			console.log("ROLLBACK successful!");
 		});		
@@ -54,10 +54,9 @@
 	
 	exports.selectPK = function(queryString,param,callback){
 		var sql = mysql.format(queryString, param);
-		console.log(sql);
 		client.query(queryString, param,function(err, result) {
 			if(err) {
-				console.log(err);
+				console.error(err);
 				callback(err,null);
 			}else{
 				console.log(result);
@@ -68,10 +67,9 @@
 	
 	exports.selectLists = function(queryString,param,callback){
 		var sql = mysql.format(queryString, param);
-		console.log(sql);
 		client.query(queryString, param,function(err, result) {
 			if(err) {
-				console.log(err);
+				console.error(err);
 				callback(err,null);
 			}else{
 				console.log(result);
@@ -82,10 +80,9 @@
 	
 	exports.insert = function(queryString, param, callback){
 		var sql = mysql.format(queryString, param);
-		console.log(sql);
 		client.query(queryString, param, function(err, result){
 			if(err) {
-				console.log(err);
+				console.error(err);
 				callback(err,null);
 			}else{
 				console.log(result);
@@ -96,13 +93,12 @@
 
 	exports.update = function(queryString, param,callback){
 		var sql = mysql.format(queryString, param);
-		console.log(sql);
 		client.query(queryString, param, function(err, result){
 			if(err) {
-				console.log(err);
+				console.error(err);
 				callback(err,null);
 			}else{
-				console.log('changed ' + result.changedRows + ' rows');
+				console.log(result);
 				callback(null,result.changedRows);
 			}
 		});
@@ -111,13 +107,11 @@
 	exports.delete = function(queryString, param, callback){
 		client.query(queryString, param,function(err, result){
 			if(err) {
-				console.log(err);
+				console.error(err);
 				callback(err,null);
 			}else{
-				console.log('deleted ' + result.affectedRows + ' rows');
+				console.log(result);
 				callback(null,result.affectedRows);
 			}
 		});
 	};
-
-//module.exports = client;

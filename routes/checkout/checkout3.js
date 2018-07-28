@@ -1,29 +1,32 @@
 var router = require('./checkout4');
-//認証用モジュールのロード
-var auth = require(process.cwd() + '/common/auth');
-
 //async モジュールのインポート
 var async = require('async');
-
+//認証用モジュールのロード
+var auth = require(process.cwd() + '/common/auth');
+//Utilモジュールのロード
+var util = require(process.cwd() + '/common/util');
 //DB用モジュールのロード
 var dba = require(process.cwd() + '/common/dba');
 
 function execute(req, res, updateFlag) {
+	//DBに接続。
 	dba.connect();
-
+	//Transaction Start
 	dba.beginTransaction();
+	//Localeの設定
+	util.setLocale(req.session.locale);
 	
     async.parallel([
     	function(callback){
     		if(updateFlag){
-	    		var queryString = "UPDATE INDIVISUAL_INFO SET RANK=?,UPD_DATE = NOW(), UPD_USER = ?  WHERE SITE_CODE = ? AND CHECK_IN_DATE = ? AND ROOM_NUM=? AND INDIVISUAL_ID = ?"; 
+	    		var queryString = 'UPDATE INDIVISUAL_INFO SET RANK=?,UPD_DATE = NOW(), UPD_USER = ?  WHERE SITE_CODE = ? AND CHECK_IN_DATE = ? AND ROOM_NUM=? AND INDIVISUAL_ID = ?'; 
 	    		var param = [req.session.indivisual.rank,req.session.staff.name,
 	    			req.session.staff.siteCode,req.session.indivisual.checkinDate,req.session.indivisual.roomNo,req.session.staff.indivisualId];
 	    
 	    		dba.update(queryString, param, function(err,result){
 	    			if(err){
-	    				console.log(err);
-	    	    		req.flash('error',err.sqlMessage);
+	    				console.error(err);
+	    	    		req.flash('error',util.getErrorMessage('DBQueryError'));
 	    				callback(err,null);
 	    			}else{
 	    				callback(null,result);
@@ -36,7 +39,7 @@ function execute(req, res, updateFlag) {
 	],
 	function(err,results){
     	if(err){
-    		console.log(err);
+    		console.error(err);
     		dba.rollback();
             res.redirect('back');
     	}else{
@@ -56,15 +59,18 @@ function execute(req, res, updateFlag) {
 
 //POST Request
 router.post('/checkout3', auth.authorize(), function(req,res){
+	//Localeの設定
+	util.setLocale(req.session.locale);
+
 	var errflag = false;
 	if(req.body.rank) {
 		req.session.indivisual.rank = req.body.rank;		  
 		if(isNaN(req.body.rank)){
-			req.flash('error','Rankは数字で入力してください。¥n');
+			req.flash('error',util.getErrorMessage('NumberFormatError',[util.getViewName('checkout2','rank')]));
 			errflag = true;		  
 		}
 	}else{
-		req.flash('error','Rankを入力してください。¥n');
+		req.flash('error',util.getErrorMessage('MandatoryError',[util.getViewName('checkout2','rank')]));
 		errflag = true;		  	  
 	}
 

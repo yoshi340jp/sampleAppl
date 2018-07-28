@@ -1,0 +1,17 @@
+{
+  "message": {
+    "error": {
+      "NotfoundUser": "ユーザ名(%s)は存在しないかパスワードが間違っています<BR/>",
+      "AuthError" : "ユーザー認証がされていません。再度ログインしてください。%s<BR/>",
+      "DatabaseError": "データベースの接続に失敗しました。<BR/>%s",
+      "DBQueryError": "データベース処理でエラーが発生しました。<BR/>",
+      "DuplicateError": "%s:%sはすでに登録されています<BR/>",
+      "RecodeNotFoundError": "レコードが存在しません<BR/>",
+      "DateFormatError": "%sはyyyyMMddの形式で入力してください<BR/>",
+      "NumberFormatError": "%sは数字で入力してください<BR/>",
+      "SelectCountError": "%sの選択は%d以内にしてください<BR/>",
+      "MandatorySelectError": "%sを選択してください<BR/>",
+      "MandatoryError": "%sを入力してください<BR/>"
+    }
+  }
+}
