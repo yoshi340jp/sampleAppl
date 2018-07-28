@@ -15,7 +15,14 @@ function execute(req, res, insertFlag) {
 
     async.parallel([
     	function(callback){
-    		var queryString = 'SELECT SHORTNAME, ENNAME FROM COUNTRY';
+    		var queryString;
+    		var language;
+    		if(req.session.locale === 'en'){
+    			language = 'ENNAME';
+    		}else if(req.session.locale === 'ja'){
+    			language = 'JPNAME';
+    		}
+    		queryString = 'SELECT SHORTNAME, ' + language + ' AS NAME FROM COUNTRY ORDER BY NAME'
 	    	dba.selectLists(queryString, null,function(err,result){
 	    		if(err){
 	    			callback(err,null);
@@ -24,6 +31,25 @@ function execute(req, res, insertFlag) {
 					callback(null,result);
 	    		}
 			});
+    	},
+    	function(callback){
+    		var queryString;
+    		var language;
+    		if(req.session.locale === 'en'){
+    			language = 'ENNAME';
+    		}else if(req.session.locale === 'ja'){
+    			language = 'JPNAME';
+    		}
+    		queryString = 'select A.COUNTRY AS SHORTNAME, B.' + language + ' AS NAME, count(*) AS COUNT FROM INDIVISUAL_INFO A INNER JOIN COUNTRY B WHERE COUNTRY IS NOT NULL AND A.COUNTRY = B.SHORTNAME GROUP BY COUNTRY ORDER BY COUNT DESC LIMIT 0, 5';
+    		console.log("HI"+req.session.locale);
+    		dba.selectLists(queryString, null,function(err,result){
+	    		if(err){
+	    			callback(err,null);
+	    		}else{
+		    		console.log("res" + result);
+					callback(null,result);
+	    		}
+			});    		
     	},
     	function(callback){
     		if(insertFlag){
@@ -57,6 +83,7 @@ function execute(req, res, insertFlag) {
 		        theme: process.env.THEME || 'flatly',
 		        flask_debug: process.env.FLASK_DEBUG || 'false',
 		        hotel_id: req.params.hotelId,
+		        top5countries: JSON.parse(results[1]),
 		        countryList: JSON.parse(results[0]),
 		        age: req.session.indivisual.age,
 		        country: req.session.indivisual.country,
