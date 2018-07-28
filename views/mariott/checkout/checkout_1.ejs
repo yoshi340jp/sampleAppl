@@ -9,13 +9,13 @@
     <title>Check-out/After Stay (Behavior Feedback)</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="<%= static_path + "/bootstrap/css/theme/" + theme + "/bootstrap.css" %>" rel="stylesheet">
+    <link href="<%= static_path + '/bootstrap/css/theme/' + theme + '/bootstrap.css' %>" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="<%= static_path + "/bootstrap/css/jumbotron-narrow.css" %>" rel="stylesheet">
+    <link href="<%= static_path + '/bootstrap/css/jumbotron-narrow.css' %>" rel="stylesheet">
 
 	<!-- JQuery.js -->
-    <script src="<%= static_path + "/jquery/jquery-1.11.3.min.js" %>"></script>
+    <script src="<%= static_path + '/jquery/jquery-1.11.3.min.js' %>"></script>
   </head>
 
   <body>
@@ -29,15 +29,15 @@
 
     <form action="" method="post">
       <div>
-          <label><%= __('checkout1.roomNo') %></label>
+          <label><%- __('checkout1.roomNo') %></label>
           <input type="text" id="roomNo" name="roomNo" value="<%= roomNo %>"/>
       </div>
       <div>
-          <label><%= __('checkout1.checkinDate') %></label>
+          <label><%- __('checkout1.checkinDate') %></label>
           <input type="text" id="checkinDate" name="checkinDate" value="<%= checkinDate %>"/>
       </div>
       <div>
-      	<label><%= __('checkout1.language') %></label>
+      	<label><%- __('checkout1.language') %></label>
 		<select name="language" id="language">
 			<option value="ja" <% if(language == 'ja'){ %> selected <% } %>>日本語</option>
 			<option value="en" <% if(language == 'en'){ %> selected <% } %>>English</option>
@@ -46,7 +46,7 @@
         <input type="button" id="langchange" value="change"/>
       </div>
       <div>
-          <input type="button" id="next" value="<%= __('checkout1.proceed') %>"/>
+          <input type="button" id="next" value="<%- __('checkout1.proceed') %>"/>
       </div>
   </form>    
   <script>

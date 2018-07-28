@@ -9,14 +9,13 @@
     <title>Check in (Behavior Request)</title>
     
     <!-- Bootstrap core CSS -->
-    <link href="<%= static_path + "/bootstrap/css/theme/" + theme + "/bootstrap.css" %>" rel="stylesheet">
+    <link href="<%= static_path + '/bootstrap/css/theme/' + theme + '/bootstrap.css' %>" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="<%= static_path + "/bootstrap/css/jumbotron-narrow.css" %>" rel="stylesheet">
+    <link href="<%= static_path + '/bootstrap/css/jumbotron-narrow.css' %>" rel="stylesheet">
 
 	<!-- JQuery.js -->
-    <script src="<%= static_path + "/jquery/jquery-1.11.3.min.js" %>"></script>
-
+    <script src="<%= static_path + '/jquery/jquery-1.11.3.min.js' %>"></script>
   </head>
 
   <body>
@@ -25,7 +24,7 @@
   	</div>
     <form action="<%= '/' + hotel_id + '/menu' %>" method="post">
       <div>
-          <input type="submit" id="reset" value="<%= __('checkin4.reset') %>"/>
+          <input type="submit" id="reset" value="<%- __('checkin4.reset') %>"/>
       </div>
     </form>    
 

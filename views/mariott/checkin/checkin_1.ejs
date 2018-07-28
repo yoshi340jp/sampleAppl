@@ -9,10 +9,10 @@
     <title>Check in (Behavior Request)</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="<%= static_path + "/bootstrap/css/theme/" + theme + "/bootstrap.css" %>" rel="stylesheet">
+    <link href="<%= static_path + '/bootstrap/css/theme/' + theme + '/bootstrap.css' %>" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="<%= static_path + "/bootstrap/css/jumbotron-narrow.css" %>" rel="stylesheet">
+    <link href="<%= static_path + '/bootstrap/css/jumbotron-narrow.css' %>" rel="stylesheet">
   </head>
 
   <body>
@@ -25,16 +25,16 @@
 
     <form action="<%- '/' + hotel_id + '/checkin/checkin2' %>" method="post">
       <div>
-          <label><%= __('checkin1.gender') %></label>
-          <input type="radio" id="gender" name="gender" value="male" <%if (gender == 'male'){ %>checked="checked"<% } %> /><%= __('checkin1.male') %>
-          <input type="radio" id="gender" name="gender" value="femail" <%if (gender == 'femail'){ %>checked="checked"<% } %>/><%= __('checkin1.female') %>          
+          <label><%- __('checkin1.gender') %></label>
+          <input type="radio" id="gender" name="gender" value="male" <%if (gender == 'male'){ %>checked="checked"<% } %> /><%- __('checkin1.male') %>
+          <input type="radio" id="gender" name="gender" value="femail" <%if (gender == 'femail'){ %>checked="checked"<% } %>/><%- __('checkin1.female') %>          
       </div>
       <div>
-          <label><%= __('checkin1.roomNo') %></label>
+          <label><%- __('checkin1.roomNo') %></label>
           <input type="text" id="roomNo" name="roomNo" value="<%= roomNo %>"/>
       </div>
       <div>
-          <input type="submit" id="next" value="<%= __('checkin1.proceed') %>"/>
+          <input type="submit" id="next" value="<%- __('checkin1.proceed') %>"/>
       </div>
   </form>    
   </body>

@@ -9,10 +9,10 @@
     <title>Check-out/After Stay (Behavior Feedback)</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="<%= static_path + "/bootstrap/css/theme/" + theme + "/bootstrap.css" %>" rel="stylesheet">
+    <link href="<%= static_path + '/bootstrap/css/theme/' + theme + '/bootstrap.css' %>" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="<%= static_path + "/bootstrap/css/jumbotron-narrow.css" %>" rel="stylesheet">
+    <link href="<%= static_path + '/bootstrap/css/jumbotron-narrow.css' %>" rel="stylesheet">
   </head>
 
   <body>
@@ -26,13 +26,13 @@
 
     <form action="<%= '/' + hotel_id + '/checkout/checkout3' %>" method="post">
       <div>
-          <label><%= __('checkout2.rank') %></label>
+          <label><%- __('checkout2.rank') %></label>
       </div>
       <div>
           <input type="text" id="rank" name="rank" value="<%= rank %>"/>
       </div>
       <div>
-          <input type="submit" id="next" value="<%= __('checkout2.proceed') %>"/>
+          <input type="submit" id="next" value="<%- __('checkout2.proceed') %>"/>
       </div>
   </form>    
   </body>

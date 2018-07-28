@@ -28,7 +28,7 @@
   	</div>
 
   	<div>
-  		<%= behavior.DONT_UNDERSTAND %>
+  		<%- behavior.DONT_UNDERSTAND %>
   	</div>
 
     <form action="" method="post">	
@@ -36,29 +36,29 @@
 	  <label>Neutral Interaction🙂</label>  	
       <div>
 		<input type="button" id="neutral_can" value="Can Do Something✅"/>
-		<label><%= behavior.NUTRAL_CAN_DO %></label>
+		<label><%- behavior.NUTRAL_CAN_DO %></label>
 		<input type="button" id="neutral_cannot" value="Can't Do Something❌"/>
-		<label><%= behavior.NUTRAL_CANNOT_DO %></label>
+		<label><%- behavior.NUTRAL_CANNOT_DO %></label>
       </div>
 	  <label>Urgent Interaction😡</label>  	
       <div>
 		<input type="button" id="urgent_can" value="Can Do Something✅"/>
-		<label><%= behavior.URGENT_CAN_DO %></label>
+		<label><%- behavior.URGENT_CAN_DO %></label>
 		<input type="button" id="urgent_cannot" value="Can't Do Something❌"/>
-		<label><%= behavior.URGENT_CANNOT_DO %></label>
+		<label><%- behavior.URGENT_CANNOT_DO %></label>
       </div>
       <div>
   	    <input type="button" id="wait" value="Wait">
-	    <label><%= behavior.WAIT %></lable>
+	    <label><%- behavior.WAIT %></lable>
 	  </div>
 	  <div>
-  	    <input type="button" id="option1" value="<%= behavior.ALTERNATIVE_OPTION %>"/>
-  	    <input type="button" id="option2" value="<%= behavior.OPTION_1 %>"/>
-  	    <input type="button" id="option3" value="<%= behavior.OPTION_2 %>"/>	    
+  	    <input type="button" id="option1" value="<%- behavior.ALTERNATIVE_OPTION %>"/>
+  	    <input type="button" id="option2" value="<%- behavior.OPTION_1 %>"/>
+  	    <input type="button" id="option3" value="<%- behavior.OPTION_2 %>"/>	    
 	 </div> 
       <div>
-          <input type="button" id="back" value="<%= __('lookup3.back') %>"/>
-          <input type="button" id="reset" value="<%= __('lookup3.reset') %>"/>	
+          <input type="button" id="back" value="<%- __('lookup3.back') %>"/>
+          <input type="button" id="reset" value="<%- __('lookup3.reset') %>"/>	
       </div>
 	</form>
   <script>

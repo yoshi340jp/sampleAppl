@@ -29,15 +29,15 @@
 
     <form action="<%= '/' + hotel_id + '/guest-lookup/lookup2/' %>" method="post">
       <div>
-          <label><%= __('lookup1.roomNo') %></label>
+          <label><%- __('lookup1.roomNo') %></label>
           <input type="text" id="roomNo" name="roomNo" value="<%= roomNo %>"/>
       </div>
       <div>
-          <label><%= __('lookup1.checkinDate') %></label>
+          <label><%- __('lookup1.checkinDate') %></label>
           <input type="text" id="checkinDate" name="checkinDate" value="<%= checkinDate %>"/>
       </div>
       <div>
-          <input type="submit" id="next" value="<%= __('lookup1.proceed') %>"/>
+          <input type="submit" id="next" value="<%- __('lookup1.proceed') %>"/>
       </div>
   </form>    
   </body>
