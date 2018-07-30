@@ -34,11 +34,51 @@
       </div>
       <div>
           <label><%- __('lookup1.checkinDate') %></label>
-          <input type="text" id="checkinDate" name="checkinDate" value="<%= checkinDate %>"/>
+          <input type="text" id="checkinDate" name="checkinDate" list="checkindatelist" value="<%= checkinDate %>" autocomplete="on"/>
+			 <datalist id="checkindatelist">
+			 </datalist>
       </div>
       <div>
           <input type="submit" id="next" value="<%- __('lookup1.proceed') %>"/>
       </div>
-  </form>    
+  </form>
+  <script>
+    <!--
+    $("#roomNo").change(function(){
+    	if($("#roomNo").val() === ''){
+    		return false;
+    	}
+    	  // Ajax通信を開始
+    	  $.ajax({
+    	    url: '<%= '/api/' + hotel_id + '/searchRoomNo/' %>',
+    	    type: 'POST',
+    	    dataType: 'json',
+    	    // フォーム要素の内容をハッシュ形式に変換
+    	    data: $('form').serializeArray(),
+    	    timeout: 5000,
+    	  })
+    	  .done(function(data) {
+    	      // 通信成功時の処理を記述
+
+    	      //DatalistのOptionを削除
+			  $('#checkindatelist').empty();       		  
+
+    	      // データが存在する間forで繰り返しoptionを追加
+    	      var plist;
+       		  for (var i in data){
+	       		    plist = $('<option>').html(data[i].CHECK_IN_DATE).val(data[i].CHECK_IN_DATE);
+        		    $("#checkindatelist").append(plist);
+       		  }
+       		  //AutoComplete = Off
+       		  $("#checkinDate").attr('autocomplete', 'off');
+		 })
+    	  .fail(function() {
+    	      // 通信失敗時の処理を記述
+    	      alert("error");
+    	  });   
+    });    
+    -->
+   </script>
+      
   </body>
 </html>
