@@ -13,6 +13,13 @@
 
     <!-- Custom styles for this template -->
     <link href="<%= static_path + '/bootstrap/css/jumbotron-narrow.css' %>" rel="stylesheet">
+    
+   	<!-- JQuery.js -->
+    <script src="<%= static_path + '/jquery/jquery-1.11.3.min.js' %>"></script>
+
+    <!-- JQuery.ratit.js -->
+    <link href="<%= static_path + '/js/rateit/rateit.css' %>" rel="stylesheet">    
+    <script src="<%= static_path + '/js/rateit/jquery.rateit.min.js' %>"></script>
   </head>
 
   <body>
@@ -28,9 +35,9 @@
       <div>
           <label><%- __('checkout2.rank') %></label>
       </div>
-      <div>
-          <input type="text" id="rank" name="rank" value="<%= rank %>"/>
-      </div>
+
+	  <input type="range" min="0" max="5" value="0" step="1" id="rank" name="rank">
+	  <div class='rateit' data-rateit-mode="font"  style="font-size:30px" data-rateit-backingfld="#rank"></div>
       <div>
           <input type="submit" id="next" value="<%- __('checkout2.proceed') %>"/>
       </div>
