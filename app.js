@@ -82,14 +82,14 @@ if (cluster.isMaster) {
 
     // routingの設定
     var router_userManage = require('./routes/userManage/');
-    var router_root = require('./routes/');
+    var router_menu = require('./routes/menu/');
     var router_checkin = require('./routes/checkin/');    
     var router_checkout = require('./routes/checkout/');    
     var router_lookup = require('./routes/guest-lookup/');    
     var router_api = require('./routes/v1/');
 
     app.use('/option/', router_userManage);
-    app.use('/:hotelId/', router_root);
+    app.use('/:hotelId/', router_menu);
     app.use('/:hotelId/checkin/', router_checkin);
     app.use('/:hotelId/checkout/', router_checkout);
     app.use('/:hotelId/guest-lookup/', router_lookup);
