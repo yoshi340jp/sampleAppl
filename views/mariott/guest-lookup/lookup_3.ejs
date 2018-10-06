@@ -33,24 +33,51 @@
 
     <form action="" method="post">	
       <input type="hidden" id="action" name="action" value=""/>
+      <input type="hidden" id="actionName" name="actionName" value=""/>
+      <input type="hidden" id="positionNum" name="positionNum" value=""/>
+      <input type="hidden" id="behavior_1" name="behavior_1" value="<%- behavior.BEHAVIOR_1 %>"/>
+      <input type="hidden" id="behavior_2" name="behavior_2" value="<%- behavior.BEHAVIOR_2 %>"/>
+      <input type="hidden" id="behavior_3" name="behavior_3" value="<%- behavior.BEHAVIOR_3 %>"/>
+      
 	  <label>Neutral Interaction🙂</label>  	
+	  <div></div>
       <div>
 		<input type="button" id="neutral_can" value="Can Do Something✅"/>
-		<label><%- behavior.NUTRAL_CAN_DO %></label>
-		<input type="button" id="neutral_cannot" value="Can't Do Something❌"/>
-		<label><%- behavior.NUTRAL_CANNOT_DO %></label>
-      </div>
-	  <label>Urgent Interaction😡</label>  	
+		<div><label><%= behavior.NEUTRAL_CAN_DO_P1 %></label></div>
+		<div><label><%= behavior.NEUTRAL_CAN_DO_P2 %></label></div>
+		<div><label><%= behavior.NEUTRAL_CAN_DO_P3 %></label></div>
+	  </div>
+	  <div></div>
       <div>
-		<input type="button" id="urgent_can" value="Can Do Something✅"/>
-		<label><%- behavior.URGENT_CAN_DO %></label>
-		<input type="button" id="urgent_cannot" value="Can't Do Something❌"/>
-		<label><%- behavior.URGENT_CANNOT_DO %></label>
+		<input type="button" id="neutral_cannot" value="Can't Do Something❌"/>
+		<div><label><%- behavior.NEUTRAL_CANNOT_DO_P1 %></label></div>
+		<div><label><%- behavior.NEUTRAL_CANNOT_DO_P2 %></label></div>
+		<div><label><%- behavior.NEUTRAL_CANNOT_DO_P3 %></label></div>
       </div>
+	  <div></div>
+	  <label>Urgent Interaction😡</label>  	
+	  <div></div>
+      <div>
+		<div><input type="button" id="urgent_can" value="Can Do Something✅"/>
+		<div><label><%- behavior.URGENT_CAN_DO_P1 %></label></div>
+		<div><label><%- behavior.URGENT_CAN_DO_P2 %></label></div>
+		<div><label><%- behavior.URGENT_CAN_DO_P3 %></label></div>
+	  </div>
+	  <div></div>
+      <div>
+		<div><input type="button" id="urgent_cannot" value="Can't Do Something❌"/>
+		<div><label><%- behavior.URGENT_CANNOT_DO_P1 %></label></div>
+		<div><label><%- behavior.URGENT_CANNOT_DO_P2 %></label></div>
+		<div><label><%- behavior.URGENT_CANNOT_DO_P3 %></label></div>
+      </div>
+	  <div></div>
       <div>
   	    <input type="button" id="wait" value="Wait">
-	    <label><%- behavior.WAIT %></lable>
+	    <div><label><%- behavior.WAIT_P1 %></lable></div>
+	    <div><label><%- behavior.WAIT_P2 %></lable></div>
+	    <div><label><%- behavior.WAIT_P3 %></lable></div>
 	  </div>
+	  <div></div>
 	  <div>
   	    <input type="button" id="option1" value="<%- behavior.ALTERNATIVE_OPTION %>"/>
   	    <input type="button" id="option2" value="<%- behavior.OPTION_1 %>"/>
@@ -66,31 +93,41 @@
     $("#neutral_can").click(function(event){
 		$('form').attr('action', '<%= '/' + hotel_id + "/guest-lookup/lookup4" %>');
 		$('#action').attr('value','1');
+		$('#actionName').attr('value','NEUTRAL_CAN_DO');
+		$('#positionNum').attr('value','1');
 		$('form').submit();
     });    
     $("#neutral_cannot").click(function(event){
 		$('form').attr('action', '<%= '/' + hotel_id + "/guest-lookup/lookup4" %>');
 		$('#action').attr('value','2');
+		$('#actionName').attr('value','NEUTRAL_CANNOT_DO');
+		$('#positionNum').attr('value','1');
 		$('form').submit();
     });    
     $("#urgent_can").click(function(event){
 		$('form').attr('action', '<%= '/' + hotel_id + "/guest-lookup/lookup4" %>');
 		$('#action').attr('value','3');
+		$('#actionName').attr('value','URGENT_CAN_DO');
+		$('#positionNum').attr('value','1');
 		$('form').submit();
     });    
     $("#urgent_cannot").click(function(event){
 		$('form').attr('action', '<%= '/' + hotel_id + "/guest-lookup/lookup4" %>');
 		$('#action').attr('value','4');
+		$('#actionName').attr('value','URGENT_CANNOT_DO');
+		$('#positionNum').attr('value','1');
 		$('form').submit();
     });    
     $("#wait").click(function(event){
 		$('form').attr('action', '<%= '/' + hotel_id + "/guest-lookup/lookup4" %>');
 		$('#action').attr('value','5');
+		$('#actionName').attr('value','WAIT');
+		$('#positionNum').attr('value','1');
 		$('form').submit();
     });    
 
     $("#back").click(function(event){
-		$('form').attr('action', '<%= '/' + hotel_id + "/guest-lookup/lookup2" %>');
+		$('form').attr('action', '<%= '/' + hotel_id + "/guest-lookup/lookup1" %>');
 		$('form').attr('method', 'get');
 		$('form').submit();
     });    

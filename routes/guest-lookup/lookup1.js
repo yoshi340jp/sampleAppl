@@ -1,4 +1,4 @@
-var router = require('./lookup2');
+var router = require('./lookup3');
 //認証用モジュールのロード
 var auth = require(process.cwd() + '/common/auth');
 

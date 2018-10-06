@@ -67,6 +67,7 @@
 	
 	exports.selectLists = function(queryString,param,callback){
 		var sql = mysql.format(queryString, param);
+		//console.error("sql" + sql);
 		client.query(queryString, param,function(err, result) {
 			if(err) {
 				console.error(err);
